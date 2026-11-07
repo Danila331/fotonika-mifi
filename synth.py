@@ -2,7 +2,7 @@
 """Синтез фазового ДОЭ для 4 изображений и расчёт метрик кейса.
 
     python synth.py img1.png img2.png img3.png img4.png --out OUTDIR
-                    [--method nn_refine|nn|gs|adam|backprop] [--steps K] [--policy peak|minmax|fit]
+                    [--method nn|nn_refine|nn_quality|gs|adam|backprop] [--steps K] [--policy peak|minmax|fit]
                     [--quantity amplitude|intensity] [--strict] [--device cpu|mps|cuda] [--seed S]
 
 Изображение i восстанавливается на z = 24.1 / 25.3 / 26.5 / 27.7 мм. В OUTDIR записываются:
@@ -167,7 +167,7 @@ def _versions():
 
 
 # ------------------------------------------------------------------ pipeline
-def run(inputs, out, method="nn_refine", steps=None, policy="peak", strict=False, device=None, seed=0,
+def run(inputs, out, method="nn", steps=None, policy="peak", strict=False, device=None, seed=0,
         checkpoint=None, figure=True, synthesiser=None, quiet=False, quantity="amplitude", refine_xtalk=REFINE_XTALK):
     """Full pipeline; returns the metrics dict (also written to out/metrics.json)."""
     effective_method = synthesiser.method if synthesiser is not None else method
@@ -257,9 +257,10 @@ def main(argv=None):
     ap.add_argument("inputs", nargs=4, help="4 исходных PNG (128×128, 8 бит, 1 канал) для плоскостей "
                                             "24.1/25.3/26.5/27.7 мм, по порядку")
     ap.add_argument("--out", required=True, help="папка для результатов")
-    ap.add_argument("--method", default="nn_refine", choices=METHODS,
-                    help="метод синтеза: nn_refine — сеть + 100 шагов уточнения (основной режим, по умолчанию), "
-                         "nn — чистая сеть, один проход (быстрый режим), gs / adam / backprop — базовые методы")
+    ap.add_argument("--method", default="nn", choices=METHODS,
+                    help="метод синтеза: nn — один проход сети (по умолчанию), "
+                         "nn_refine — сеть + 100 шагов, nn_quality — дополнительные шаги с отбором, "
+                         "gs / adam / backprop — базовые методы")
     ap.add_argument("--steps", type=int, help="число итераций для gs / adam / nn_refine "
                                               f"(по умолчанию {DEFAULT_STEPS['gs']}/{DEFAULT_STEPS['adam']}/"
                                               f"{DEFAULT_STEPS['nn_refine']})")

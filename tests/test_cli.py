@@ -136,3 +136,11 @@ def test_strict_rejects_bad_input(tmp_path):
     assert r.returncode != 0 and "mode RGB" in r.stderr
     r = _run("synth.py", *targets, "--out", tmp_path / "o", "--method", "backprop", "--no-figure")
     assert "converted" in r.stderr and _is_case_png(tmp_path / "o" / "doe.png")
+
+
+def test_default_cli_uses_single_network_pass(tmp_path):
+    targets = _targets(tmp_path)
+    out = tmp_path / "default"
+    _run("synth.py", *targets, "--out", out, "--no-figure")
+    metrics = json.loads((out / "metrics.json").read_text())
+    assert metrics["method"] == "nn" and metrics["steps"] == 0

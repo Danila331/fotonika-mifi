@@ -149,7 +149,7 @@ def gs_batch(targets_u8, iters: int, init="backprop", seed: int = 0, variant: st
     rec = sorted(set(int(r) for r in record_at)) if record_at else []
     snaps = {}
     if 0 in rec:
-        snaps[0] = phase.double().cpu().numpy()
+        snaps[0] = phase.cpu().double().numpy()
     chirp = prop.chirp
     D = amp_t.shape[1]
     w = torch.ones(amp_t.shape[:2] + (1, 1), device=device)
@@ -173,8 +173,8 @@ def gs_batch(targets_u8, iters: int, init="backprop", seed: int = 0, variant: st
         if it in rec:
             if timings is not None:
                 timings[it] = time.perf_counter() - t_start
-            snaps[it] = phase.double().cpu().numpy()
-    out = phase.double().cpu().numpy()
+            snaps[it] = phase.cpu().double().numpy()
+    out = phase.cpu().double().numpy()
     return (out, snaps) if record_at else out
 
 
@@ -335,7 +335,7 @@ def adam_batch(targets_u8, steps: int, init_phase=None, lr: float = 0.15, device
     snaps = {}
     wrap = lambda p: torch.remainder(p + math.pi, 2 * math.pi) - math.pi
     if 0 in rec:
-        snaps[0] = wrap(phase.detach()).double().cpu().numpy()
+        snaps[0] = wrap(phase.detach()).cpu().double().numpy()
     step_q = 2 * math.pi / 255
     for it in range(1, steps + 1):
         opt.zero_grad(set_to_none=True)
@@ -353,8 +353,8 @@ def adam_batch(targets_u8, steps: int, init_phase=None, lr: float = 0.15, device
         if it in rec:
             if timings is not None:
                 timings[it] = time.perf_counter() - t_start
-            snaps[it] = wrap(phase.detach()).double().cpu().numpy()
-    out = wrap(phase.detach()).double().cpu().numpy()
+            snaps[it] = wrap(phase.detach()).cpu().double().numpy()
+    out = wrap(phase.detach()).cpu().double().numpy()
     return (out, snaps) if record_at else out
 
 
