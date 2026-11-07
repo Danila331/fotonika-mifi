@@ -145,7 +145,7 @@ def gs_batch(targets_u8, iters: int, init="backprop", seed: int = 0, variant: st
     tb, _ = _as_batch(targets_u8)
     prop = _prop(device)
     amp_t = _target_amp(_targets01(tb, device), quantity)
-    phase = _init(tb, init, seed, device) if init != "backprop" else backprop_init(tb, seed, device, quantity)
+    phase = backprop_init(tb, seed, device, quantity) if isinstance(init, str) and init == "backprop" else _init(tb, init, seed, device)
     rec = sorted(set(int(r) for r in record_at)) if record_at else []
     snaps = {}
     if 0 in rec:

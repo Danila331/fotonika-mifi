@@ -8,10 +8,16 @@
 Результат: out/doe.png (ДОЭ), out/recon_1..4.png (восстановления Френелем, амплитуда |K|), out/metrics.json.
 """
 import argparse
+import os
 import sys
 from pathlib import Path
 
 import synth
+
+
+def default_method():
+    """Docker defaults to fastgs; the native CLI keeps the original single-pass default."""
+    return "nn_fastgs" if os.environ.get("DOE_DEFAULT_MODE") == "fastgs" else "nn"
 
 
 def main(argv=None):
@@ -20,18 +26,20 @@ def main(argv=None):
     ap.add_argument("--in-dir", help="папка с ровно четырьмя PNG (берутся по алфавиту)")
     ap.add_argument("--out", default="out", help="папка результатов (по умолчанию out)")
     ap.add_argument("--fast", action="store_true", help="только сеть, один проход (режим по умолчанию)")
+    ap.add_argument("--fastgs", action="store_true", help="компактная нейросеть + GS (по умолчанию 100 итераций; основной Docker-режим)")
     ap.add_argument("--refine", action="store_true", help="сеть + 100 шагов уточнения фазы")
     ap.add_argument("--quality", action="store_true", help="качество: исходные 100 шагов + отбор улучшенных ДОЭ по метрикам")
+    ap.add_argument("--visual", action="store_true", help="визуальное качество: multiscale L1 + excess-TV после базовых 100 шагов")
     ap.add_argument("--checkpoint", help="путь к альтернативным весам модели")
-    ap.add_argument("--steps", type=int, help="шаги уточнения: обычно 100; с --quality дополнительные шаги после базовых 100 (по умолчанию 300)")
+    ap.add_argument("--steps", type=int, help="число GS-итераций для --fastgs (по умолчанию 100) или дополнительные шаги для других режимов")
     ap.add_argument("--device", default="auto", choices=("auto", "cpu", "cuda", "mps"),
                     help="auto: выбрать доступный GPU (по умолчанию); в Docker используется CPU")
     ap.add_argument("--figure", action="store_true", help="дополнительно нарисовать comparison.png")
     a = ap.parse_args(argv)
-    if sum((a.fast, a.refine, a.quality)) > 1:
-        ap.error("--fast, --refine и --quality нельзя использовать вместе")
-    if a.steps is not None and not (a.refine or a.quality):
-        ap.error("--steps требует --refine или --quality")
+    if sum((a.fast, a.fastgs, a.refine, a.quality, a.visual)) > 1:
+        ap.error("--fast, --fastgs, --refine, --quality и --visual нельзя использовать вместе")
+    if a.steps is not None and not (a.fastgs or a.refine or a.quality or a.visual):
+        ap.error("--steps требует --fastgs, --refine, --quality или --visual")
     if a.in_dir:
         files = sorted(p for p in Path(a.in_dir).iterdir() if p.suffix.lower() == ".png")
         inputs = [str(p) for p in files]
@@ -39,8 +47,19 @@ def main(argv=None):
         inputs = a.images
     if len(inputs) != 4:
         ap.error(f"нужно ровно 4 изображения, получено {len(inputs)}")
-    synth.run(inputs, a.out, "nn_quality" if a.quality else ("nn_refine" if a.refine else "nn"),
-              a.steps, "peak", False, None if a.device == "auto" else a.device,
+    if a.fastgs:
+        method = "nn_fastgs"
+    elif a.visual:
+        method = "nn_visual"
+    elif a.quality:
+        method = "nn_quality"
+    elif a.refine:
+        method = "nn_refine"
+    elif a.fast:
+        method = "nn"
+    else:
+        method = default_method()
+    synth.run(inputs, a.out, method, a.steps, "peak", False, None if a.device == "auto" else a.device,
               0, a.checkpoint, figure=a.figure)
     print(f"ДОЭ: {Path(a.out) / 'doe.png'}")
 

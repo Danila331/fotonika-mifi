@@ -33,10 +33,11 @@ from doe.metrics import crosstalk, evaluate
 
 REFINE_ALPHA, REFINE_BETA = 1.0, 0.5  # вес оконного / глобального ИСС при уточнении (SSIM — основная метрика сдачи)
 REFINE_XTALK = 0.25  # вес штрафа за помехи при уточнении (при обучении 1.0): чище картинка, разделение чуть слабее
-METHODS = ("nn", "nn_refine", "nn_quality", "gs", "adam", "backprop")
-DEFAULT_STEPS = {"nn_quality": 300, "nn_refine": 100, "gs": 200, "adam": 500, "backprop": 0, "nn": 0}
+METHODS = ("nn", "nn_fastgs", "nn_refine", "nn_quality", "nn_visual", "gs", "adam", "backprop")
+DEFAULT_STEPS = {"nn_fastgs": 100, "nn_quality": 300, "nn_visual": 300, "nn_refine": 100, "gs": 200, "adam": 500, "backprop": 0, "nn": 0}
 METRICS = ("pcc", "ssim_global", "ssim_skimage", "ssim_gauss")
-METHOD_RU = {"nn_quality": "Нейросеть + отбор улучшенного ДОЭ", "nn": "Нейросеть", "nn_refine": "Нейросеть + уточнение", "gs": "Гершберг–Сакстон",
+METHOD_RU = {"nn_quality": "Нейросеть + отбор улучшенного ДОЭ", "nn_visual": "Нейросеть + визуальное уточнение",
+             "nn_fastgs": "Нейросеть + быстрый GS", "nn": "Нейросеть", "nn_refine": "Нейросеть + уточнение", "gs": "Гершберг–Сакстон",
              "adam": "Adam", "backprop": "Обратное распространение"}
 
 
@@ -67,7 +68,9 @@ class Synthesiser:
         self.seed = seed
         self.info = {}
         t0 = time.perf_counter()
-        if method in ("nn", "nn_refine", "nn_quality"):
+        if method == "nn_fastgs" and checkpoint is None:
+            checkpoint = Path(__file__).resolve().parent / "checkpoints" / "stage0-finetuned.pt"
+        if method in ("nn", "nn_fastgs", "nn_refine", "nn_quality", "nn_visual"):
             try:
                 from doe.infer import NeuralDOE
             except ImportError as e:
@@ -81,6 +84,10 @@ class Synthesiser:
                                               if Path(ck).resolve().is_relative_to(Path(__file__).resolve().parent)
                                               else ck)
             self.info["model_device"] = str(getattr(self.model, "device", device))
+            if method == "nn_fastgs":
+                import torch
+                self.model.model = self.model.model.to(memory_format=torch.channels_last)
+                self.info["inference_layout"] = "channels_last"
         elif method in ("gs", "adam"):
             try:
                 from doe import baselines
@@ -94,6 +101,15 @@ class Synthesiser:
         m = self.method
         if m == "nn":
             return self.model.predict(targets_u8)
+        if m == "nn_fastgs":
+            import torch
+            from doe.baselines import gs_batch
+            x = self.model._to_tensor(targets_u8[None]).to(memory_format=torch.channels_last)
+            with torch.no_grad():
+                initial = self.model.model(x).float().cpu().numpy()
+            self.info["fastgs"] = {"teacher": "stage0_finetuned", "steps": self.steps,
+                                   "note": "neural initialization plus multi-plane GS refinement"}
+            return gs_batch(targets_u8[None], iters=self.steps, init=initial, device=self.model.device)[0]
         if m == "nn_quality":
             from doe.quality import QualityConfig, refine_quality
             cfg = QualityConfig(steps=self.steps, xtalk=self.refine_xtalk)
@@ -101,6 +117,15 @@ class Synthesiser:
             from dataclasses import asdict
             self.info["quality"] = {"config": asdict(cfg), "baseline_steps": 100, "baseline_xtalk": 0.25, "selection": choices[0],
                                     "score_note": "engineering proxy, not official jury score"}
+            return phases[0]
+        if m == "nn_visual":
+            from doe.perceptual import refine_perceptual
+            baseline = self.model.predict_refined_batch(targets_u8[None], steps=100, xtalk=0.25,
+                                                        alpha=REFINE_ALPHA, beta=REFINE_BETA)
+            phases, choices = refine_perceptual(self.model, targets_u8[None], baseline, steps=self.steps)
+            self.info["visual"] = {"baseline_steps": 100, "additional_steps": self.steps,
+                                   "ms_l1_weight": 0.3, "excess_tv_weight": 0.1,
+                                   "selection": choices[0], "score_note": "engineering proxy, not official jury score"}
             return phases[0]
         if m == "nn_refine":
             return self.model.predict_refined(targets_u8, steps=self.steps, xtalk=self.refine_xtalk,
@@ -171,8 +196,8 @@ def run(inputs, out, method="nn", steps=None, policy="peak", strict=False, devic
         checkpoint=None, figure=True, synthesiser=None, quiet=False, quantity="amplitude", refine_xtalk=REFINE_XTALK):
     """Full pipeline; returns the metrics dict (also written to out/metrics.json)."""
     effective_method = synthesiser.method if synthesiser is not None else method
-    if effective_method == "nn_quality" and (policy != "peak" or quantity != "amplitude"):
-        raise ValueError("nn_quality supports only amplitude with peak normalization")
+    if effective_method in ("nn_fastgs", "nn_quality", "nn_visual") and (policy != "peak" or quantity != "amplitude"):
+        raise ValueError(f"{effective_method} supports only amplitude with peak normalization")
     t_start = time.perf_counter()
     out = Path(out)
     out.mkdir(parents=True, exist_ok=True)
@@ -213,7 +238,7 @@ def run(inputs, out, method="nn", steps=None, policy="peak", strict=False, devic
 
     timings["total_ms"] = (time.perf_counter() - t_start) * 1e3
     result = {
-        "method": syn.method, "steps": syn.steps, "refine_xtalk": syn.refine_xtalk if syn.method in ("nn_refine", "nn_quality") else None, "quantity": quantity, "policy": policy,
+        "method": syn.method, "steps": syn.steps, "refine_xtalk": syn.refine_xtalk if syn.method in ("nn_refine", "nn_quality", "nn_visual") else None, "quantity": quantity, "policy": policy,
         "protocol": "E1: сравниваются амплитуды |K|; E2: исходное и восстановленное изображения делятся "
                     "на свой максимум (= 1), метрики в [0, 1], ИСС с L = 1; recon_i.png = round(255·X/max X)",
         "inputs": [str(p) for p in inputs], "input_warnings": input_warnings,
@@ -256,7 +281,9 @@ def main(argv=None):
     ap.add_argument("--out", required=True, help="папка для результатов")
     ap.add_argument("--method", default="nn", choices=METHODS,
                     help="метод синтеза: nn — один проход сети (по умолчанию), "
+                         "nn_fastgs — компактная сеть + 100 итераций GS (основной Docker-режим), "
                          "nn_refine — сеть + 100 шагов, nn_quality — дополнительные шаги с отбором, "
+                         "nn_visual — multiscale/TV уточнение для визуального качества, "
                          "gs / adam / backprop — базовые методы")
     ap.add_argument("--steps", type=int, help="число итераций для gs / adam / nn_refine "
                                               f"(по умолчанию {DEFAULT_STEPS['gs']}/{DEFAULT_STEPS['adam']}/"

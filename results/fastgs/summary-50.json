@@ -1,0 +1,147 @@
+{
+  "method": "nn_fastgs",
+  "steps": 50,
+  "cases": 12,
+  "load_ms": 42.489708000001514,
+  "rows": [
+    {
+      "case": "cyrillic_NIYAU",
+      "pcc": 0.7881208823126704,
+      "ssim_global": 0.45355213839174413,
+      "ssim_skimage": 0.12005640137435132,
+      "ssim_gauss": 0.12016386132299145,
+      "selectivity": 0.10514905753918069,
+      "synth_ms": 97.71,
+      "total_ms": 157.042
+    },
+    {
+      "case": "dark_objects",
+      "pcc": 0.6435735265868725,
+      "ssim_global": 0.4791842063640172,
+      "ssim_skimage": 0.3221381211310607,
+      "ssim_gauss": 0.32363800479065374,
+      "selectivity": 0.1474059024631839,
+      "synth_ms": 90.782,
+      "total_ms": 147.79
+    },
+    {
+      "case": "digits_1234",
+      "pcc": 0.7711945637947188,
+      "ssim_global": 0.5152229707790742,
+      "ssim_skimage": 0.09716854661165125,
+      "ssim_gauss": 0.09648786588758246,
+      "selectivity": 0.0845843863076916,
+      "synth_ms": 99.219,
+      "total_ms": 155.088
+    },
+    {
+      "case": "halftone_photos",
+      "pcc": 0.43089234771539947,
+      "ssim_global": 0.3172925268631519,
+      "ssim_skimage": 0.2223087642990654,
+      "ssim_gauss": 0.2228596424727608,
+      "selectivity": 0.17672082592184385,
+      "synth_ms": 98.519,
+      "total_ms": 175.412
+    },
+    {
+      "case": "letters_MIFI",
+      "pcc": 0.6667537749424874,
+      "ssim_global": 0.4072795630975003,
+      "ssim_skimage": 0.09085111586138432,
+      "ssim_gauss": 0.0903774261434876,
+      "selectivity": 0.10575989363459726,
+      "synth_ms": 104.591,
+      "total_ms": 164.723
+    },
+    {
+      "case": "mixed",
+      "pcc": 0.5670176546616379,
+      "ssim_global": 0.3503303882097155,
+      "ssim_skimage": 0.1439075740040555,
+      "ssim_gauss": 0.14576710107137786,
+      "selectivity": 0.1582121133722229,
+      "synth_ms": 97.72,
+      "total_ms": 156.626
+    },
+    {
+      "case": "photo_like",
+      "pcc": 0.39127689802927873,
+      "ssim_global": 0.308471964745196,
+      "ssim_skimage": 0.24170263781176538,
+      "ssim_gauss": 0.25953653376554797,
+      "selectivity": 0.11263655356172719,
+      "synth_ms": 98.761,
+      "total_ms": 156.904
+    },
+    {
+      "case": "photo_text",
+      "pcc": 0.5969336746299831,
+      "ssim_global": 0.4260555238225675,
+      "ssim_skimage": 0.22065765254199737,
+      "ssim_gauss": 0.22193619904201126,
+      "selectivity": 0.23985833097863113,
+      "synth_ms": 90.013,
+      "total_ms": 145.919
+    },
+    {
+      "case": "rocket_smoke",
+      "pcc": 0.7827097737321294,
+      "ssim_global": 0.7005326995990182,
+      "ssim_skimage": 0.467250611883927,
+      "ssim_gauss": 0.472166921398792,
+      "selectivity": 0.07796578119348074,
+      "synth_ms": 97.988,
+      "total_ms": 157.808
+    },
+    {
+      "case": "shapes",
+      "pcc": 0.6926475168957178,
+      "ssim_global": 0.4123686279489184,
+      "ssim_skimage": 0.09432831680892667,
+      "ssim_gauss": 0.09285135597676328,
+      "selectivity": 0.19847301445553228,
+      "synth_ms": 101.144,
+      "total_ms": 161.251
+    },
+    {
+      "case": "stress",
+      "pcc": 0.9422222551279347,
+      "ssim_global": 0.39538247552459915,
+      "ssim_skimage": 0.08938281284492096,
+      "ssim_gauss": 0.08936775797253742,
+      "selectivity": 0.12418515106960093,
+      "synth_ms": 100.08,
+      "total_ms": 159.455
+    },
+    {
+      "case": "words",
+      "pcc": 0.7754077676195373,
+      "ssim_global": 0.5672374762099608,
+      "ssim_skimage": 0.19070198898809568,
+      "ssim_gauss": 0.1786083694749542,
+      "selectivity": 0.235091188954885,
+      "synth_ms": 89.795,
+      "total_ms": 146.251
+    }
+  ],
+  "mean_pcc": 0.6707292196706974,
+  "median_pcc": 0.6797006459191026,
+  "mean_ssim_global": 0.4444092134629552,
+  "median_ssim_global": 0.41921207588574294,
+  "mean_ssim_skimage": 0.19170454534676676,
+  "median_ssim_skimage": 0.16730478149607558,
+  "mean_ssim_gauss": 0.19281341994328835,
+  "median_ssim_gauss": 0.16218773527316604,
+  "mean_selectivity": 0.14717018328771478,
+  "median_selectivity": 0.13579552676639242,
+  "mean_synth_ms": 97.19350000000001,
+  "median_synth_ms": 98.2535,
+  "mean_total_ms": 157.02241666666666,
+  "median_total_ms": 156.973,
+  "representatives": {
+    "worst": "photo_like",
+    "median": "photo_text",
+    "best": "rocket_smoke"
+  }
+}
