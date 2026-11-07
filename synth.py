@@ -186,8 +186,6 @@ def run(inputs, out, method="nn", steps=None, policy="peak", strict=False, devic
     syn = synthesiser or Synthesiser(method, steps, device, seed, checkpoint, refine_xtalk)
     phase, synth_ms = syn.timed(targets)
     timings = {"load_ms": syn.load_ms, "synth_ms": synth_ms}
-    if syn.method == "nn":   # first call includes lazy init / kernel warm-up; a second pass costs ~0.1 s
-        _, timings["synth_warm_ms"] = syn.timed(targets)
 
     doe_path = out / "doe.png"
     save_gray(doe_path, phase_to_u8(phase))
@@ -247,7 +245,6 @@ def run(inputs, out, method="nn", steps=None, policy="peak", strict=False, devic
         print_table(rep)
         print(f"селективность по глубине {xt['selectivity']:.3f}, своя цель лучшая в {xt['own_best']}/4 плоскостях")
         print(f"метод {syn.method}: синтез {synth_ms:.1f} мс"
-              + (f" (повторно {timings['synth_warm_ms']:.1f} мс)" if "synth_warm_ms" in timings else "")
               + f", загрузка {syn.load_ms:.0f} мс, всего {timings['total_ms']:.0f} мс -> {out}")
     return result
 

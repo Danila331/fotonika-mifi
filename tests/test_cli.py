@@ -144,3 +144,20 @@ def test_default_cli_uses_single_network_pass(tmp_path):
     _run("synth.py", *targets, "--out", out, "--no-figure")
     metrics = json.loads((out / "metrics.json").read_text())
     assert metrics["method"] == "nn" and metrics["steps"] == 0
+
+
+def test_nn_pipeline_does_one_forward_pass(tmp_path):
+    from types import SimpleNamespace
+    import synth
+
+    targets = _targets(tmp_path)
+    calls = []
+
+    def timed(_):
+        calls.append(1)
+        return np.zeros((N, N), dtype=np.float64), 1.0
+
+    engine = SimpleNamespace(method="nn", steps=0, device="cpu", load_ms=0.0,
+                             info={}, refine_xtalk=0.25, timed=timed)
+    synth.run(targets, tmp_path / "out", synthesiser=engine, figure=False, quiet=True)
+    assert len(calls) == 1
