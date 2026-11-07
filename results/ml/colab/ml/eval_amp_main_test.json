@@ -1,0 +1,133 @@
+{
+ "ckpt": "/content/drive/MyDrive/neural-doe/checkpoints/amp_main/best.pt",
+ "split": "test",
+ "n": 256,
+ "model_cfg": {
+  "kind": "doe",
+  "inputs": "physics",
+  "residual": false,
+  "width": 32,
+  "mults": [
+   1,
+   2,
+   4,
+   8
+  ],
+  "blocks": 2,
+  "attn": true,
+  "unroll": 2,
+  "unroll_width": 24,
+  "unroll_mults": [
+   1,
+   2,
+   4
+  ],
+  "seed": 1234,
+  "quantity": "amplitude",
+  "bp_phase": "random"
+ },
+ "params_M": 11.76938,
+ "refine_lr": 0.05,
+ "loss_cfg": {
+  "alpha": 0.5,
+  "beta": 0.25,
+  "gamma": 0.3,
+  "quant": false,
+  "norm": "soft",
+  "soft_beta": 20.0,
+  "w_pcc": 1.0,
+  "quantity": "amplitude"
+ },
+ "metrics": {
+  "nn": {
+   "pcc_mean": 0.5302814031308838,
+   "pcc_worst": 0.43864283516023184,
+   "ssim_global_mean": 0.37383806664799735,
+   "ssim_global_worst": 0.2649094094835197,
+   "ssim_skimage_mean": 0.26394000948723007,
+   "ssim_skimage_worst": 0.14087944263069008,
+   "ssim_gauss_mean": 0.2780453089375743,
+   "ssim_gauss_worst": 0.1468494112715461
+  },
+  "nn+adam20": {
+   "pcc_mean": 0.5364553797246356,
+   "pcc_worst": 0.46033537331835467,
+   "ssim_global_mean": 0.39333182569723774,
+   "ssim_global_worst": 0.29630846132226674,
+   "ssim_skimage_mean": 0.32078449810868065,
+   "ssim_skimage_worst": 0.17560612632019618,
+   "ssim_gauss_mean": 0.3387147252951441,
+   "ssim_gauss_worst": 0.1841091078979614
+  },
+  "nn+adam50": {
+   "pcc_mean": 0.5426707768036021,
+   "pcc_worst": 0.466959776696389,
+   "ssim_global_mean": 0.4041020766501403,
+   "ssim_global_worst": 0.308193200361184,
+   "ssim_skimage_mean": 0.33243477318331005,
+   "ssim_skimage_worst": 0.18514054257641738,
+   "ssim_gauss_mean": 0.35005707215653636,
+   "ssim_gauss_worst": 0.19355594132743503
+  },
+  "nn+adam100": {
+   "pcc_mean": 0.5484450156749108,
+   "pcc_worst": 0.4737199827859917,
+   "ssim_global_mean": 0.4101774980136915,
+   "ssim_global_worst": 0.31415628533025386,
+   "ssim_skimage_mean": 0.3385189608133129,
+   "ssim_skimage_worst": 0.19107693494161315,
+   "ssim_gauss_mean": 0.35527531858459827,
+   "ssim_gauss_worst": 0.19907141956649968
+  },
+  "backprop": {
+   "pcc_mean": 0.3126821695101559,
+   "pcc_worst": 0.14365303850262479,
+   "ssim_global_mean": 0.19723586964845657,
+   "ssim_global_worst": 0.08420382551708558,
+   "ssim_skimage_mean": 0.07815533324094644,
+   "ssim_skimage_worst": 0.04414514237533231,
+   "ssim_gauss_mean": 0.07745247287980533,
+   "ssim_gauss_worst": 0.04354622220862876
+  },
+  "backprop+adam20": {
+   "pcc_mean": 0.47645105410008953,
+   "pcc_worst": 0.41449175990802756,
+   "ssim_global_mean": 0.33017310745200124,
+   "ssim_global_worst": 0.23693439928392668,
+   "ssim_skimage_mean": 0.17133317485032182,
+   "ssim_skimage_worst": 0.08770324339521132,
+   "ssim_gauss_mean": 0.168664700354916,
+   "ssim_gauss_worst": 0.0842370603008229
+  },
+  "backprop+adam50": {
+   "pcc_mean": 0.5324111384716635,
+   "pcc_worst": 0.47295950048366864,
+   "ssim_global_mean": 0.39236817707393046,
+   "ssim_global_worst": 0.2975652320348744,
+   "ssim_skimage_mean": 0.22162412307570642,
+   "ssim_skimage_worst": 0.11988849231408727,
+   "ssim_gauss_mean": 0.22017117820131327,
+   "ssim_gauss_worst": 0.11689429217101882
+  },
+  "backprop+adam100": {
+   "pcc_mean": 0.5572457530489325,
+   "pcc_worst": 0.4973110138249156,
+   "ssim_global_mean": 0.42026685483414516,
+   "ssim_global_worst": 0.32410355594320495,
+   "ssim_skimage_mean": 0.25742070894775027,
+   "ssim_skimage_worst": 0.1427141922249047,
+   "ssim_gauss_mean": 0.2580965564542022,
+   "ssim_gauss_worst": 0.14059049175599092
+  }
+ },
+ "timing_ms": {
+  "cuda": {
+   "predict": 16.95150899922737,
+   "predict_refined_50": 296.9963830000779
+  },
+  "cpu": {
+   "predict": 94.3028809997486,
+   "predict_refined_50": 1445.9102520013403
+  }
+ }
+}

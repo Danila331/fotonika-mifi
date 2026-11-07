@@ -1,0 +1,24 @@
+[v2] demo 12 quads, val 32 quads
+backprop_init               0.7 ms/holo | val pcc 0.306/0.140 sg 0.182 sk 0.078 sgs 0.077 J 0.209 | demo pcc 0.441/0.359 sg 0.262 sk 0.075 sgs 0.074 J 0.289
+curve gs: 1:0.261 5:0.313 10:0.334 20:0.351 50:0.369 100:0.378 200:0.385 500:0.392
+gs_20                      19.5 ms/holo | val pcc 0.487/0.241 sg 0.304 sk 0.171 sgs 0.170 J 0.351 | demo pcc 0.642/0.487 sg 0.426 sk 0.165 sgs 0.163 J 0.446
+gs_100                     85.7 ms/holo | val pcc 0.516/0.263 sg 0.328 sk 0.197 sgs 0.196 J 0.378 | demo pcc 0.665/0.509 sg 0.447 sk 0.188 sgs 0.187 J 0.470
+gs_500                    416.6 ms/holo | val pcc 0.531/0.274 sg 0.341 sk 0.210 sgs 0.210 J 0.392 | demo pcc 0.676/0.519 sg 0.458 sk 0.202 sgs 0.201 J 0.482
+curve gs_weighted: 1:0.245 5:0.291 10:0.315 20:0.336 50:0.350 100:0.363 200:0.373 500:0.382
+gs_weighted_500           500.4 ms/holo | val pcc 0.509/0.503 sg 0.332 sk 0.218 sgs 0.216 J 0.382 | demo pcc 0.623/0.599 sg 0.425 sk 0.210 sgs 0.210 J 0.453
+curve adam: 1:0.241 5:0.316 10:0.355 20:0.396 50:0.442 100:0.461 200:0.470 500:0.479 1000:0.482
+adam_20                   154.6 ms/holo | val pcc 0.496/0.359 sg 0.340 sk 0.206 sgs 0.203 J 0.373 | demo pcc 0.602/0.475 sg 0.440 sk 0.169 sgs 0.166 J 0.430
+adam_100                 1057.2 ms/holo | val pcc 0.566/0.406 sg 0.419 sk 0.292 sgs 0.293 J 0.450 | demo pcc 0.666/0.524 sg 0.535 sk 0.233 sgs 0.233 J 0.500
+adam_500                 4619.4 ms/holo | val pcc 0.586/0.418 sg 0.441 sk 0.329 sgs 0.332 J 0.477 | demo pcc 0.681/0.534 sg 0.560 sk 0.298 sgs 0.301 J 0.533
+adam_1000                6975.0 ms/holo | val pcc 0.590/0.420 sg 0.444 sk 0.336 sgs 0.340 J 0.482 | demo pcc 0.683/0.534 sg 0.563 sk 0.308 sgs 0.313 J 0.539
+gs100+adam500            4315.0 ms/holo | val pcc 0.589/0.428 sg 0.440 sk 0.334 sgs 0.337 J 0.480 | demo pcc 0.679/0.532 sg 0.560 sk 0.326 sgs 0.330 J 0.542
+adam_int_500             3637.3 ms/holo | val pcc 0.533/0.301 sg 0.385 sk 0.223 sgs 0.221 J 0.405 | demo pcc 0.631/0.451 sg 0.479 sk 0.167 sgs 0.166 J 0.451
+gs_int_100                169.7 ms/holo | val pcc 0.459/0.190 sg 0.287 sk 0.157 sgs 0.156 J 0.329 | demo pcc 0.627/0.475 sg 0.422 sk 0.140 sgs 0.138 J 0.430
+best by J: adam_1000
+quant adam_1000: cont pcc 0.590/0.421 sg 0.444 sk 0.337 sgs 0.340 J 0.482
+quant gs_100: cont pcc 0.516/0.263 sg 0.328 sk 0.197 sgs 0.196 J 0.378
+single gs_100: 0.52 s
+single gs_500: 2.42 s
+single adam_100: 2.18 s
+single adam_500: 11.51 s
+wrote /Users/danilka2203/Desktop/work/neural-doe-claude/results/baselines

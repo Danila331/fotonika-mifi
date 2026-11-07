@@ -1,0 +1,11 @@
+мягкая норм. β=20, штраф 1 (как сейчас)    pcc 0.533 worst 0.466 ssim_g 0.397 ssim_gs 0.300 sel 0.343 own 3.891
+точный max (как у жюри), штраф 1           pcc 0.522 worst 0.463 ssim_g 0.384 ssim_gs 0.276 sel 0.331 own 3.891
+мягкая норм. β=100, штраф 1                pcc 0.530 worst 0.466 ssim_g 0.402 ssim_gs 0.295 sel 0.340 own 3.891
+мягкая β=20, штраф 0,5                     pcc 0.566 worst 0.494 ssim_g 0.432 ssim_gs 0.313 sel 0.295 own 3.703
+мягкая β=20, штраф 2                       pcc 0.461 worst 0.391 ssim_g 0.330 ssim_gs 0.275 sel 0.377 own 3.922
+штраф 0.0  шагов  50  pcc 0.564 worst 0.495 ssim_g 0.432 ssim_gs 0.279 sel 0.240 own 3.469
+штраф 0.0  шагов 200  pcc 0.578 worst 0.506 ssim_g 0.449 ssim_gs 0.318 sel 0.239 own 3.453
+штраф 0.25 шагов  50  pcc 0.560 worst 0.493 ssim_g 0.427 ssim_gs 0.279 sel 0.262 own 3.625
+штраф 0.25 шагов 200  pcc 0.575 worst 0.502 ssim_g 0.443 ssim_gs 0.316 sel 0.267 own 3.594
+штраф 0.5  шагов  50  pcc 0.552 worst 0.487 ssim_g 0.418 ssim_gs 0.277 sel 0.285 own 3.719
+штраф 0.5  шагов 200  pcc 0.566 worst 0.494 ssim_g 0.432 ssim_gs 0.313 sel 0.295 own 3.703

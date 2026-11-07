@@ -1,0 +1,239 @@
+<!doctype html><html lang="ru"><meta charset="utf-8">
+<title>Нейросетевой синтез ДОЭ — результаты</title>
+<style>
+body{font-family:-apple-system,Helvetica,Arial,sans-serif;max-width:1200px;margin:24px auto;padding:0 16px;color:#1d1d1f}
+h1{font-size:26px} h2{margin-top:40px;border-bottom:1px solid #ddd;padding-bottom:4px}
+table{border-collapse:collapse;margin:8px 0} td,th{border:1px solid #ccc;padding:4px 10px;text-align:right}
+td:first-child,th:first-child{text-align:left} figure{margin:8px 0} figcaption{color:#666;font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px} .note{color:#555} .miss{color:#b00}
+pre{background:#f6f6f6;padding:8px;overflow-x:auto;font-size:12px}
+img{image-rendering:pixelated}
+</style>
+<h1>Нейросетевой синтез фазового ДОЭ: 4 изображения на 4 расстояниях</h1>
+<p class="note">Протокол экспертов: сравниваются амплитуды |K|, каждое изображение нормировано на свой максимум = 1.
+Все цифры — по сохранённому 8-битному фазовому PNG. λ = 532 нм, пиксель 10 мкм, z = 24,1 / 25,3 / 26,5 / 27,7 мм.</p>
+<p>Время на одну голограмму (Mac M3 Pro): сеть — <b>13.3 мс</b> на GPU (MPS) /
+124.5 мс на CPU; сеть + 100 шагов уточнения — 163.0 мс на GPU.</p>
+
+<h2>1. Итог на TEST (256 четвёрок, невиданные классы объектов и шрифты) — модель amp_xtalk, основной режим «сеть + 50»</h2>
+<table><tr><th>режим</th><th>КК ср.</th><th>КК худш.</th><th>ИСС глоб.</th><th>ИСС skimage</th><th>ИСС gauss</th><th>селективность</th><th>своя лучшая</th></tr><tr><td>сеть</td><td>0.504</td><td>0.429</td><td>0.340</td><td>0.247</td><td>0.259</td><td>0.190</td><td>2.87/4</td></tr><tr><td>сеть + 20</td><td>0.507</td><td>0.441</td><td>0.358</td><td>0.290</td><td>0.305</td><td>0.224</td><td>3.16/4</td></tr><tr><td>сеть + 50</td><td>0.512</td><td>0.446</td><td>0.366</td><td>0.299</td><td>0.313</td><td>0.250</td><td>3.33/4</td></tr><tr><td>сеть + 100</td><td>0.519</td><td>0.453</td><td>0.373</td><td>0.303</td><td>0.316</td><td>0.276</td><td>3.50/4</td></tr><tr><td>обратное распр.</td><td>0.313</td><td>0.144</td><td>0.197</td><td>0.078</td><td>0.077</td><td>0.073</td><td>1.96/4</td></tr><tr><td>Adam со старта обр. распр., 100</td><td>0.512</td><td>0.454</td><td>0.370</td><td>0.243</td><td>0.244</td><td>0.324</td><td>3.90/4</td></tr></table>
+<h3>VAL (256)</h3><table><tr><th>режим</th><th>КК ср.</th><th>КК худш.</th><th>ИСС глоб.</th><th>ИСС skimage</th><th>ИСС gauss</th><th>селективность</th><th>своя лучшая</th></tr><tr><td>сеть</td><td>0.491</td><td>0.421</td><td>0.339</td><td>0.258</td><td>0.269</td><td>0.197</td><td>3.03/4</td></tr><tr><td>сеть + 20</td><td>0.496</td><td>0.434</td><td>0.358</td><td>0.301</td><td>0.315</td><td>0.234</td><td>3.33/4</td></tr><tr><td>сеть + 50</td><td>0.504</td><td>0.442</td><td>0.366</td><td>0.309</td><td>0.322</td><td>0.262</td><td>3.50/4</td></tr><tr><td>сеть + 100</td><td>0.512</td><td>0.449</td><td>0.373</td><td>0.313</td><td>0.324</td><td>0.288</td><td>3.59/4</td></tr><tr><td>обратное распр.</td><td>0.302</td><td>0.136</td><td>0.196</td><td>0.083</td><td>0.082</td><td>0.076</td><td>1.97/4</td></tr><tr><td>Adam со старта обр. распр., 100</td><td>0.512</td><td>0.454</td><td>0.366</td><td>0.258</td><td>0.259</td><td>0.336</td><td>3.88/4</td></tr></table>
+
+<h2>1а. Надёжность: доверительные интервалы, парные сравнения, граничные случаи</h2>
+<pre>| метод | КК ср. | КК худш. | ИСС глоб. | ИСС gauss | селективность | своя лучшая |
+|---|---|---|---|---|---|---|
+| сеть (amp_deep6) | 0.511 [0.501; 0.522] | 0.442 [0.428; 0.455] | 0.342 [0.331; 0.353] | 0.192 [0.184; 0.199] | 0.292 [0.284; 0.300] | 3.730 [3.668; 3.789] |
+| сеть + 50 (amp_deep6) | 0.529 [0.519; 0.538] | 0.471 [0.459; 0.482] | 0.390 [0.378; 0.401] | 0.257 [0.247; 0.266] | 0.332 [0.323; 0.341] | 3.875 [3.836; 3.914] |
+| прежняя сеть (amp_xtalk) | 0.504 [0.492; 0.516] | 0.429 [0.414; 0.442] | 0.340 [0.327; 0.353] | 0.259 [0.246; 0.271] | 0.190 [0.181; 0.199] | 2.871 [2.758; 2.984] |
+| GS-200 | 0.544 [0.531; 0.557] | 0.291 [0.265; 0.318] | 0.375 [0.362; 0.388] | 0.210 [0.202; 0.217] | 0.201 [0.193; 0.209] | 2.523 [2.426; 2.625] |
+| разность | КК ср. | КК худш. | ИСС глоб. | ИСС gauss | селективность | своя лучшая |
+|---|---|---|---|---|---|---|
+| сеть + 50 (amp_deep6) − GS-200 | -0.015 [-0.021; -0.010] | 0.179 [0.160; 0.199] | 0.015 [0.007; 0.023] | 0.047 [0.041; 0.053] | 0.131 [0.126; 0.137] | 1.352 [1.254; 1.441] |
+| сеть (amp_deep6) − прежняя сеть (amp_xtalk) | 0.007 [0.004; 0.012] | 0.013 [0.007; 0.019] | 0.002 [-0.003; 0.007] | -0.067 [-0.076; -0.059] | 0.102 [0.098; 0.107] | 0.859 [0.754; 0.969] |
+| сеть + 50 (amp_deep6) − сеть (amp_deep6) | 0.017 [0.015; 0.020] | 0.029 [0.023; 0.035] | 0.048 [0.043; 0.053] | 0.065 [0.061; 0.070] | 0.040 [0.037; 0.042] | 0.145 [0.102; 0.191] |
+| случай | ср. яркость целей | std целей | наша сеть+50: КК (валидных) | наша сеть: КК | их сеть: КК | ИСС глоб. наша+50 / их |
+|---|---|---|---|---|---|---|
+| E0 | 0, 0, 0, 0 | 0, 0, 0, 0 | — (0/4) | — (0/4) | — (0/4) | 0.671 / 0.000 |
+| E1 | 128, 128, 128, 128 | 0, 0, 0, 0 | — (0/4) | — (0/4) | — (0/4) | 0.134 / 0.055 |
+| E2 | 0, 0, 0, 0 | 2, 2, 2, 2 | 0.481 (4/4) | 0.487 (4/4) | 0.392 (4/4) | 0.765 / 0.109 |
+| E3 | 128, 128, 128, 128 | 128, 128, 128, 128 | 0.504 (4/4) | 0.475 (4/4) | 0.378 (4/4) | 0.385 / 0.228 |
+| E4 | 36, 36, 36, 36 | 80, 80, 80, 80 | 0.914 (4/4) | 0.894 (4/4) | 0.879 (4/4) | 0.786 / 0.728 |
+| E5 | 0, 0, 108, 55 | 0, 4, 95, 64 | 0.624 (3/4) | 0.624 (3/4) | 0.502 (3/4) | 0.165 / 0.108 |
+| E6 | 128, 128, 128, 128 | 0, 0, 0, 0 | 0.555 (4/4) | 0.050 (4/4) | 0.003 (4/4) | 0.073 / 0.055 |
+| E7 | 128, 128, 128, 127 | 74, 74, 74, 74 | 0.645 (4/4) | 0.604 (4/4) | 0.387 (4/4) | 0.615 / 0.313 |</pre>
+
+<h2>1б. Сравнение с решением команды Codex (их тест main60, один оценщик, протокол экспертов)</h2>
+<pre>| метод | КК ср. | КК худш. | ИСС глоб. | ИСС skimage | ИСС gauss | селективность | своя лучшая |
+|---|---|---|---|---|---|---|---|
+| **Codex: сеть** | 0,511 | 0,421 | 0,299 | 0,086 | 0,084 | 0,097 | 2,18/4 |
+| Codex: сеть + 50 | 0,516 | 0,466 | 0,309 | 0,093 | 0,091 | 0,100 | 2,85/4 |
+| Codex: Adam-200 (интенсивность) | 0,560 | 0,435 | 0,343 | 0,098 | 0,092 | 0,165 | 2,83/4 |
+| Codex: GS-200 | **0,582** | 0,470 | **0,408** | 0,108 | 0,107 | 0,184 | 3,10/4 |
+| **Наша глубокая сеть (amp_deep6), 24 мс** | 0,534 | 0,494 | 0,348 | 0,106 | 0,106 | 0,276 | 3,93/4 |
+| **Наша глубокая сеть + 50 (основной режим)** | 0,533 | **0,502** | 0,364 | 0,144 | 0,147 | **0,309** | **3,98/4** |
+| наша сеть (amp_xtalk) | 0,526 | 0,487 | 0,380 | 0,118 | 0,118 | 0,176 | 3,47/4 |
+| наша сеть + 50 (amp_xtalk) | 0,524 | 0,495 | 0,378 | **0,190** | **0,196** | 0,246 | 3,75/4 |
+| наша первая сеть (amp_main) | 0,537 | 0,490 | 0,407 | 0,163 | 0,164 | 0,092 | 2,70/4 |</pre>
+
+<h2>1в. Найденная проблема: смесь во всех плоскостях → штраф за помехи</h2>
+<p class="note">Первая модель рисовала почти одинаковую смесь всех 4 картинок во всех плоскостях. Строки: цели / первая модель / модель со штрафом / GS.</p>
+<div class="grid">
+<figure><a href="/results/final/xtalk_compare_dark_objects.png" target="_blank"><img src="/results/final/xtalk_compare_dark_objects.png" style="width:100%"></a><figcaption>dark_objects</figcaption></figure>
+<figure><a href="/results/final/xtalk_compare_shapes.png" target="_blank"><img src="/results/final/xtalk_compare_shapes.png" style="width:100%"></a><figcaption>shapes</figcaption></figure>
+<figure><a href="/results/final/refine_compare_shapes.png" target="_blank"><img src="/results/final/refine_compare_shapes.png" style="width:100%"></a><figcaption>shapes: новая сеть + 50 шагов против GS</figcaption></figure>
+<figure><a href="/results/final/refine_compare_dark_objects.png" target="_blank"><img src="/results/final/refine_compare_dark_objects.png" style="width:100%"></a><figcaption>dark_objects: новая сеть + 50 шагов против GS</figcaption></figure>
+</div>
+
+<h2>2. Скорость и качество (все методы на одном CPU)</h2>
+<figure><a href="/results/delivery/speed_quality.png" target="_blank"><img src="/results/delivery/speed_quality.png" style="width:100%"></a><figcaption>12 демо-наборов</figcaption></figure>
+<figure><a href="/results/delivery/speed_quality_test.png" target="_blank"><img src="/results/delivery/speed_quality_test.png" style="width:100%"></a><figcaption>32 тестовые четвёрки</figcaption></figure>
+
+<h2>3. Скан фокуса: изображения проявляются в своих плоскостях</h2>
+<div class="grid">
+<figure><a href="/results/delivery/focus_sweep_photo_text.gif" target="_blank"><img src="/results/delivery/focus_sweep_photo_text.gif" style="width:100%"></a><figcaption>photo_text: z от 22 до 30 мм</figcaption></figure><figure><a href="/results/delivery/crosstalk_photo_text.png" target="_blank"><img src="/results/delivery/crosstalk_photo_text.png" style="width:100%"></a><figcaption>photo_text: КК каждой цели в зависимости от z</figcaption></figure><figure><a href="/results/delivery/focus_sweep_halftone_photos.gif" target="_blank"><img src="/results/delivery/focus_sweep_halftone_photos.gif" style="width:100%"></a><figcaption>halftone_photos: z от 22 до 30 мм</figcaption></figure><figure><a href="/results/delivery/crosstalk_halftone_photos.png" target="_blank"><img src="/results/delivery/crosstalk_halftone_photos.png" style="width:100%"></a><figcaption>halftone_photos: КК каждой цели в зависимости от z</figcaption></figure><figure><a href="/results/delivery/focus_sweep_rocket_smoke.gif" target="_blank"><img src="/results/delivery/focus_sweep_rocket_smoke.gif" style="width:100%"></a><figcaption>rocket_smoke: z от 22 до 30 мм</figcaption></figure><figure><a href="/results/delivery/crosstalk_rocket_smoke.png" target="_blank"><img src="/results/delivery/crosstalk_rocket_smoke.png" style="width:100%"></a><figcaption>rocket_smoke: КК каждой цели в зависимости от z</figcaption></figure>
+</div>
+<h3>Селективность по глубине (все демо)</h3><pre>| Набор | сеть: селективность | сеть: своя лучшая | сеть + 50: селективность | сеть + 50: своя лучшая | сходство целей |
+|---|---|---|---|---|---|
+| halftone_photos | 0.340 | 4/4 | 0.387 | 4/4 | -0.039 |
+| photo_text | 0.346 | 4/4 | 0.387 | 4/4 | 0.073 |
+| words | 0.301 | 4/4 | 0.331 | 4/4 | 0.346 |
+| shapes | 0.289 | 3/4 | 0.316 | 4/4 | 0.253 |
+| mixed | 0.279 | 4/4 | 0.305 | 4/4 | 0.119 |
+| photo_like | 0.236 | 4/4 | 0.276 | 4/4 | -0.056 |
+| stress | 0.376 | 1/4 | 0.257 | 1/4 | 1.000 |
+| dark_objects | 0.234 | 4/4 | 0.249 | 4/4 | 0.202 |
+| letters_MIFI | 0.207 | 3/4 | 0.225 | 3/4 | 0.270 |
+| cyrillic_NIYAU | 0.181 | 4/4 | 0.207 | 4/4 | 0.533 |
+| digits_1234 | 0.161 | 4/4 | 0.182 | 4/4 | 0.490 |
+| rocket_smoke | 0.117 | 2/4 | 0.127 | 4/4 | 0.525 |</pre>
+
+<h2>4. Демо-наборы: цели и восстановления</h2>
+<p class="note">Для каждого набора: сеть (один проход, быстрый режим) и сеть + 50 шагов уточнения (основной режим).</p>
+
+<h3>photo_text</h3><div class='grid'><figure><a href="/results/delivery/demo/photo_text/nn/comparison.png" target="_blank"><img src="/results/delivery/demo/photo_text/nn/comparison.png" style="width:100%"></a><figcaption>сеть, один проход</figcaption></figure><figure><a href="/results/delivery/demo/photo_text/nn_refine50/comparison.png" target="_blank"><img src="/results/delivery/demo/photo_text/nn_refine50/comparison.png" style="width:100%"></a><figcaption>сеть + 50 шагов (основной режим)</figcaption></figure></div>
+<figure><a href="/results/delivery/methods/photo_text/methods.png" target="_blank"><img src="/results/delivery/methods/photo_text/methods.png" style="width:100%"></a><figcaption>сравнение методов</figcaption></figure>
+<h3>halftone_photos</h3><div class='grid'><figure><a href="/results/delivery/demo/halftone_photos/nn/comparison.png" target="_blank"><img src="/results/delivery/demo/halftone_photos/nn/comparison.png" style="width:100%"></a><figcaption>сеть, один проход</figcaption></figure><figure><a href="/results/delivery/demo/halftone_photos/nn_refine50/comparison.png" target="_blank"><img src="/results/delivery/demo/halftone_photos/nn_refine50/comparison.png" style="width:100%"></a><figcaption>сеть + 50 шагов (основной режим)</figcaption></figure></div>
+<figure><a href="/results/delivery/methods/halftone_photos/methods.png" target="_blank"><img src="/results/delivery/methods/halftone_photos/methods.png" style="width:100%"></a><figcaption>сравнение методов</figcaption></figure>
+<h3>shapes</h3><div class='grid'><figure><a href="/results/delivery/demo/shapes/nn/comparison.png" target="_blank"><img src="/results/delivery/demo/shapes/nn/comparison.png" style="width:100%"></a><figcaption>сеть, один проход</figcaption></figure><figure><a href="/results/delivery/demo/shapes/nn_refine50/comparison.png" target="_blank"><img src="/results/delivery/demo/shapes/nn_refine50/comparison.png" style="width:100%"></a><figcaption>сеть + 50 шагов (основной режим)</figcaption></figure></div>
+<figure><a href="/results/delivery/methods/shapes/methods.png" target="_blank"><img src="/results/delivery/methods/shapes/methods.png" style="width:100%"></a><figcaption>сравнение методов</figcaption></figure>
+<h3>dark_objects</h3><div class='grid'><figure><a href="/results/delivery/demo/dark_objects/nn/comparison.png" target="_blank"><img src="/results/delivery/demo/dark_objects/nn/comparison.png" style="width:100%"></a><figcaption>сеть, один проход</figcaption></figure><figure><a href="/results/delivery/demo/dark_objects/nn_refine50/comparison.png" target="_blank"><img src="/results/delivery/demo/dark_objects/nn_refine50/comparison.png" style="width:100%"></a><figcaption>сеть + 50 шагов (основной режим)</figcaption></figure></div>
+<figure><a href="/results/delivery/methods/dark_objects/methods.png" target="_blank"><img src="/results/delivery/methods/dark_objects/methods.png" style="width:100%"></a><figcaption>сравнение методов</figcaption></figure>
+<h3>rocket_smoke</h3><div class='grid'><figure><a href="/results/delivery/demo/rocket_smoke/nn/comparison.png" target="_blank"><img src="/results/delivery/demo/rocket_smoke/nn/comparison.png" style="width:100%"></a><figcaption>сеть, один проход</figcaption></figure><figure><a href="/results/delivery/demo/rocket_smoke/nn_refine50/comparison.png" target="_blank"><img src="/results/delivery/demo/rocket_smoke/nn_refine50/comparison.png" style="width:100%"></a><figcaption>сеть + 50 шагов (основной режим)</figcaption></figure></div>
+<figure><a href="/results/delivery/methods/rocket_smoke/methods.png" target="_blank"><img src="/results/delivery/methods/rocket_smoke/methods.png" style="width:100%"></a><figcaption>сравнение методов</figcaption></figure>
+<h3>words</h3><div class='grid'><figure><a href="/results/delivery/demo/words/nn/comparison.png" target="_blank"><img src="/results/delivery/demo/words/nn/comparison.png" style="width:100%"></a><figcaption>сеть, один проход</figcaption></figure><figure><a href="/results/delivery/demo/words/nn_refine50/comparison.png" target="_blank"><img src="/results/delivery/demo/words/nn_refine50/comparison.png" style="width:100%"></a><figcaption>сеть + 50 шагов (основной режим)</figcaption></figure></div>
+<figure><a href="/results/delivery/methods/words/methods.png" target="_blank"><img src="/results/delivery/methods/words/methods.png" style="width:100%"></a><figcaption>сравнение методов</figcaption></figure>
+<h3>cyrillic_NIYAU</h3><div class='grid'><figure><a href="/results/delivery/demo/cyrillic_NIYAU/nn/comparison.png" target="_blank"><img src="/results/delivery/demo/cyrillic_NIYAU/nn/comparison.png" style="width:100%"></a><figcaption>сеть, один проход</figcaption></figure><figure><a href="/results/delivery/demo/cyrillic_NIYAU/nn_refine50/comparison.png" target="_blank"><img src="/results/delivery/demo/cyrillic_NIYAU/nn_refine50/comparison.png" style="width:100%"></a><figcaption>сеть + 50 шагов (основной режим)</figcaption></figure></div>
+<figure><a href="/results/delivery/methods/cyrillic_NIYAU/methods.png" target="_blank"><img src="/results/delivery/methods/cyrillic_NIYAU/methods.png" style="width:100%"></a><figcaption>сравнение методов</figcaption></figure>
+<h3>letters_MIFI</h3><div class='grid'><figure><a href="/results/delivery/demo/letters_MIFI/nn/comparison.png" target="_blank"><img src="/results/delivery/demo/letters_MIFI/nn/comparison.png" style="width:100%"></a><figcaption>сеть, один проход</figcaption></figure><figure><a href="/results/delivery/demo/letters_MIFI/nn_refine50/comparison.png" target="_blank"><img src="/results/delivery/demo/letters_MIFI/nn_refine50/comparison.png" style="width:100%"></a><figcaption>сеть + 50 шагов (основной режим)</figcaption></figure></div>
+<figure><a href="/results/delivery/methods/letters_MIFI/methods.png" target="_blank"><img src="/results/delivery/methods/letters_MIFI/methods.png" style="width:100%"></a><figcaption>сравнение методов</figcaption></figure>
+<h3>digits_1234</h3><div class='grid'><figure><a href="/results/delivery/demo/digits_1234/nn/comparison.png" target="_blank"><img src="/results/delivery/demo/digits_1234/nn/comparison.png" style="width:100%"></a><figcaption>сеть, один проход</figcaption></figure><figure><a href="/results/delivery/demo/digits_1234/nn_refine50/comparison.png" target="_blank"><img src="/results/delivery/demo/digits_1234/nn_refine50/comparison.png" style="width:100%"></a><figcaption>сеть + 50 шагов (основной режим)</figcaption></figure></div>
+<figure><a href="/results/delivery/methods/digits_1234/methods.png" target="_blank"><img src="/results/delivery/methods/digits_1234/methods.png" style="width:100%"></a><figcaption>сравнение методов</figcaption></figure>
+<h3>mixed</h3><div class='grid'><figure><a href="/results/delivery/demo/mixed/nn/comparison.png" target="_blank"><img src="/results/delivery/demo/mixed/nn/comparison.png" style="width:100%"></a><figcaption>сеть, один проход</figcaption></figure><figure><a href="/results/delivery/demo/mixed/nn_refine50/comparison.png" target="_blank"><img src="/results/delivery/demo/mixed/nn_refine50/comparison.png" style="width:100%"></a><figcaption>сеть + 50 шагов (основной режим)</figcaption></figure></div>
+<figure><a href="/results/delivery/methods/mixed/methods.png" target="_blank"><img src="/results/delivery/methods/mixed/methods.png" style="width:100%"></a><figcaption>сравнение методов</figcaption></figure>
+<h3>photo_like</h3><div class='grid'><figure><a href="/results/delivery/demo/photo_like/nn/comparison.png" target="_blank"><img src="/results/delivery/demo/photo_like/nn/comparison.png" style="width:100%"></a><figcaption>сеть, один проход</figcaption></figure><figure><a href="/results/delivery/demo/photo_like/nn_refine50/comparison.png" target="_blank"><img src="/results/delivery/demo/photo_like/nn_refine50/comparison.png" style="width:100%"></a><figcaption>сеть + 50 шагов (основной режим)</figcaption></figure></div>
+<figure><a href="/results/delivery/methods/photo_like/methods.png" target="_blank"><img src="/results/delivery/methods/photo_like/methods.png" style="width:100%"></a><figcaption>сравнение методов</figcaption></figure>
+<h3>stress</h3><div class='grid'><figure><a href="/results/delivery/demo/stress/nn/comparison.png" target="_blank"><img src="/results/delivery/demo/stress/nn/comparison.png" style="width:100%"></a><figcaption>сеть, один проход</figcaption></figure><figure><a href="/results/delivery/demo/stress/nn_refine50/comparison.png" target="_blank"><img src="/results/delivery/demo/stress/nn_refine50/comparison.png" style="width:100%"></a><figcaption>сеть + 50 шагов (основной режим)</figcaption></figure></div>
+<figure><a href="/results/delivery/methods/stress/methods.png" target="_blank"><img src="/results/delivery/methods/stress/methods.png" style="width:100%"></a><figcaption>сравнение методов</figcaption></figure>
+
+<h2>5. Обучение (Colab L4, 30 000 шагов, 1 ч 47 мин)</h2>
+<figure><a href="/results/ml/colab/ml/amp_main/curves.png" target="_blank"><img src="/results/ml/colab/ml/amp_main/curves.png" style="width:100%"></a></figure>
+<h2>6. Классические методы (потолок качества)</h2>
+<figure><a href="/results/baselines/curves_v2.png" target="_blank"><img src="/results/baselines/curves_v2.png" style="width:100%"></a><figcaption>качество от числа итераций GS и Adam</figcaption></figure>
+<pre>| метод | PCC ср. | PCC худш. | SSIM global | SSIM skimage | SSIM gauss | J | время/голограмму |
+|---|---|---|---|---|---|---|---|
+| backprop_init | 0.306 | 0.140 | 0.182 | 0.078 | 0.077 | 0.209 | 1 мс |
+| gs_20 | 0.487 | 0.241 | 0.304 | 0.171 | 0.170 | 0.351 | 20 мс |
+| gs_100 | 0.516 | 0.263 | 0.328 | 0.197 | 0.196 | 0.378 | 86 мс |
+| gs_500 | 0.531 | 0.274 | 0.341 | 0.210 | 0.210 | 0.392 | 417 мс |
+| gs_weighted_500 | 0.509 | 0.503 | 0.332 | 0.218 | 0.216 | 0.382 | 500 мс |
+| adam_20 | 0.496 | 0.359 | 0.340 | 0.206 | 0.203 | 0.373 | 155 мс |
+| adam_100 | 0.566 | 0.406 | 0.419 | 0.292 | 0.293 | 0.450 | 1.1 с |
+| adam_500 | 0.586 | 0.418 | 0.441 | 0.329 | 0.332 | 0.477 | 4.6 с |
+| adam_1000 | 0.590 | 0.420 | 0.444 | 0.336 | 0.340 | 0.482 | 7.0 с |
+| gs100+adam500 | 0.589 | 0.428 | 0.440 | 0.334 | 0.337 | 0.480 | 4.3 с |
+| adam_int_500 | 0.533 | 0.301 | 0.385 | 0.223 | 0.221 | 0.405 | 3.6 с |
+| gs_int_100 | 0.459 | 0.190 | 0.287 | 0.157 | 0.156 | 0.329 | 170 мс |
+| метод | PCC ср. | PCC худш. | SSIM global | SSIM skimage | SSIM gauss | J | время/голограмму |
+|---|---|---|---|---|---|---|---|
+| backprop_init | 0.441 | 0.359 | 0.262 | 0.075 | 0.074 | 0.289 | 1 мс |
+| gs_20 | 0.642 | 0.487 | 0.426 | 0.165 | 0.163 | 0.446 | 20 мс |
+| gs_100 | 0.665 | 0.509 | 0.447 | 0.188 | 0.187 | 0.470 | 86 мс |
+| gs_500 | 0.676 | 0.519 | 0.458 | 0.202 | 0.201 | 0.482 | 417 мс |
+| gs_weighted_500 | 0.623 | 0.599 | 0.425 | 0.210 | 0.210 | 0.453 | 500 мс |
+| adam_20 | 0.602 | 0.475 | 0.440 | 0.169 | 0.166 | 0.430 | 155 мс |
+| adam_100 | 0.666 | 0.524 | 0.535 | 0.233 | 0.233 | 0.500 | 1.1 с |
+| adam_500 | 0.681 | 0.534 | 0.560 | 0.298 | 0.301 | 0.533 | 4.6 с |
+| adam_1000 | 0.683 | 0.534 | 0.563 | 0.308 | 0.313 | 0.539 | 7.0 с |
+| gs100+adam500 | 0.679 | 0.532 | 0.560 | 0.326 | 0.330 | 0.542 | 4.3 с |
+| adam_int_500 | 0.631 | 0.451 | 0.479 | 0.167 | 0.166 | 0.451 | 3.6 с |
+| gs_int_100 | 0.627 | 0.475 | 0.422 | 0.140 | 0.138 | 0.430 | 170 мс |
+| метод | итерации | PCC | SSIM global | SSIM gauss | J | время |
+|---|---|---|---|---|---|---|
+| gs | 1 | 0.377 | 0.225 | 0.103 | 0.261 | 2 мс |
+| gs | 5 | 0.443 | 0.270 | 0.139 | 0.313 | 5 мс |
+| gs | 10 | 0.467 | 0.288 | 0.155 | 0.334 | 10 мс |
+| gs | 20 | 0.487 | 0.304 | 0.170 | 0.351 | 20 мс |
+| gs | 50 | 0.506 | 0.321 | 0.187 | 0.369 | 44 мс |
+| gs | 100 | 0.516 | 0.328 | 0.196 | 0.378 | 86 мс |
+| gs | 200 | 0.524 | 0.334 | 0.203 | 0.385 | 163 мс |
+| gs | 500 | 0.531 | 0.341 | 0.210 | 0.392 | 417 мс |
+| gs_weighted | 1 | 0.353 | 0.209 | 0.099 | 0.245 | 2 мс |
+| gs_weighted | 5 | 0.406 | 0.255 | 0.135 | 0.291 | 5 мс |
+| gs_weighted | 10 | 0.436 | 0.275 | 0.154 | 0.315 | 10 мс |
+| gs_weighted | 20 | 0.460 | 0.293 | 0.171 | 0.336 | 24 мс |
+| gs_weighted | 50 | 0.474 | 0.303 | 0.187 | 0.350 | 59 мс |
+| gs_weighted | 100 | 0.488 | 0.314 | 0.198 | 0.363 | 107 мс |
+| gs_weighted | 200 | 0.499 | 0.323 | 0.207 | 0.373 | 206 мс |
+| gs_weighted | 500 | 0.509 | 0.332 | 0.216 | 0.382 | 500 мс |
+| adam | 1 | 0.345 | 0.195 | 0.109 | 0.241 | 6 мс |
+| adam | 5 | 0.438 | 0.261 | 0.160 | 0.316 | 24 мс |
+| adam | 10 | 0.480 | 0.319 | 0.185 | 0.355 | 46 мс |
+| adam | 20 | 0.519 | 0.365 | 0.226 | 0.396 | 94 мс |
+| adam | 50 | 0.559 | 0.411 | 0.281 | 0.442 | 237 мс |
+| adam | 100 | 0.575 | 0.429 | 0.308 | 0.461 | 475 мс |
+| adam | 200 | 0.583 | 0.434 | 0.321 | 0.470 | 976 мс |
+| adam | 500 | 0.589 | 0.441 | 0.337 | 0.479 | 2.8 с |
+| adam | 1000 | 0.590 | 0.444 | 0.340 | 0.482 | 7.0 с |
+| метод | метрика | 24.1 мм | 25.3 мм | 26.5 мм | 27.7 мм |
+|---|---|---|---|---|---|
+| adam_1000 | pcc | 0.631 | 0.577 | 0.553 | 0.600 |
+| adam_1000 | ssim_global | 0.480 | 0.445 | 0.409 | 0.443 |
+| adam_1000 | ssim_skimage | 0.359 | 0.360 | 0.286 | 0.340 |
+| adam_1000 | ssim_gauss | 0.367 | 0.362 | 0.290 | 0.342 |
+| gs_100 | pcc | 0.537 | 0.490 | 0.521 | 0.518 |
+| gs_100 | ssim_global | 0.342 | 0.271 | 0.345 | 0.352 |
+| gs_100 | ssim_skimage | 0.186 | 0.206 | 0.194 | 0.202 |
+| gs_100 | ssim_gauss | 0.186 | 0.207 | 0.194 | 0.198 |
+| gs_weighted_500 | pcc | 0.519 | 0.512 | 0.503 | 0.503 |
+| gs_weighted_500 | ssim_global | 0.330 | 0.300 | 0.355 | 0.345 |
+| gs_weighted_500 | ssim_skimage | 0.191 | 0.239 | 0.215 | 0.225 |
+| gs_weighted_500 | ssim_gauss | 0.191 | 0.238 | 0.215 | 0.221 |
+| метод | тип | число картинок | PCC | SSIM global | SSIM skimage | SSIM gauss | J |
+|---|---|---|---|---|---|---|---|
+| adam_1000 | halftone | 82 | 0.609 | 0.510 | 0.430 | 0.437 | 0.534 |
+| adam_1000 | simple | 46 | 0.555 | 0.327 | 0.169 | 0.167 | 0.388 |
+| adam_100 | halftone | 82 | 0.576 | 0.473 | 0.371 | 0.374 | 0.491 |
+| adam_100 | simple | 46 | 0.547 | 0.324 | 0.152 | 0.149 | 0.378 |
+| gs_100 | halftone | 82 | 0.464 | 0.335 | 0.239 | 0.239 | 0.368 |
+| gs_100 | simple | 46 | 0.611 | 0.314 | 0.122 | 0.121 | 0.398 |
+| gs_500 | halftone | 82 | 0.481 | 0.351 | 0.256 | 0.256 | 0.385 |
+| gs_500 | simple | 46 | 0.622 | 0.323 | 0.127 | 0.127 | 0.407 |
+| метод | PCC ср. | PCC худш. | SSIM global | SSIM skimage | SSIM gauss | J | время/голограмму |
+|---|---|---|---|---|---|---|---|
+| adam_500 — оценка по амплитуде | 0.586 | 0.418 | 0.441 | 0.329 | 0.332 | 0.477 |  |
+| adam_500 — оценка по интенсивности | 0.520 | 0.322 | 0.258 | 0.262 | 0.263 | 0.391 |  |
+| adam_int_500 — оценка по амплитуде | 0.533 | 0.301 | 0.385 | 0.223 | 0.221 | 0.405 |  |
+| adam_int_500 — оценка по интенсивности | 0.561 | 0.301 | 0.394 | 0.373 | 0.376 | 0.471 |  |
+| метод | PCC ср. | PCC худш. | SSIM global | SSIM skimage | SSIM gauss | J | время/голограмму |
+|---|---|---|---|---|---|---|---|
+| adam_1000 непрерывная фаза | 0.590 | 0.421 | 0.444 | 0.337 | 0.340 | 0.482 |  |
+| adam_1000 8 бит | 0.590 | 0.420 | 0.444 | 0.336 | 0.340 | 0.482 |  |
+| gs_100 непрерывная фаза | 0.516 | 0.263 | 0.328 | 0.197 | 0.196 | 0.378 |  |
+| gs_100 8 бит | 0.516 | 0.263 | 0.328 | 0.197 | 0.196 | 0.378 |  |
+| метод | PCC ср. | PCC худш. | SSIM global | SSIM skimage | SSIM gauss | J | время/голограмму |
+|---|---|---|---|---|---|---|---|
+| adam_1000 [peak] | 0.590 | 0.420 | 0.444 | 0.336 | 0.340 | 0.482 |  |
+| adam_1000 [minmax] | 0.590 | 0.420 | 0.444 | 0.333 | 0.337 | 0.481 |  |
+| adam_1000 [fit] | 0.602 | 0.429 | 0.481 | 0.337 | 0.340 | 0.494 |  |
+| gs_100 [peak] | 0.516 | 0.263 | 0.328 | 0.197 | 0.196 | 0.378 |  |
+| gs_100 [minmax] | 0.516 | 0.263 | 0.324 | 0.191 | 0.190 | 0.376 |  |
+| gs_100 [fit] | 0.525 | 0.277 | 0.411 | 0.229 | 0.224 | 0.407 |  |
+| метод | PCC ср. | PCC худш. | SSIM global | SSIM skimage | SSIM gauss | J | время/голограмму |
+|---|---|---|---|---|---|---|---|
+| w2_05_1_soft_b20 | 0.583 | 0.416 | 0.427 | 0.280 | 0.282 | 0.456 | 1.5 с |
+| jury | 0.579 | 0.415 | 0.428 | 0.276 | 0.278 | 0.453 | 1.4 с |
+| w3_1_1_soft | 0.584 | 0.416 | 0.444 | 0.254 | 0.254 | 0.450 | 1.3 с |
+| pcc_ssimgl_soft | 0.547 | 0.350 | 0.448 | 0.290 | 0.294 | 0.445 | 1.5 с |
+| jury_worst | 0.566 | 0.506 | 0.406 | 0.282 | 0.285 | 0.445 | 1.7 с |
+| w1_0_1_soft | 0.558 | 0.386 | 0.334 | 0.326 | 0.330 | 0.444 | 1.2 с |
+| w2_05_1_peak | 0.571 | 0.411 | 0.411 | 0.253 | 0.254 | 0.439 | 1.3 с |
+| w1_05_2_soft | 0.513 | 0.315 | 0.371 | 0.358 | 0.365 | 0.438 | 1.5 с |
+| pcc_ssimgl_peak | 0.531 | 0.346 | 0.415 | 0.254 | 0.256 | 0.420 | 1.3 с |
+| pcc | 0.612 | 0.467 | 0.317 | 0.173 | 0.172 | 0.416 | 249 мс |
+| pcc_ssimg_peak | 0.550 | 0.369 | 0.422 | 0.180 | 0.174 | 0.405 | 328 мс |
+| amp_mse | 0.539 | 0.293 | 0.341 | 0.186 | 0.185 | 0.388 | 382 мс |
+| jury_int | 0.525 | 0.312 | 0.365 | 0.187 | 0.185 | 0.386 | 1.4 с |
+| mse_peak | 0.362 | 0.153 | 0.282 | 0.123 | 0.118 | 0.268 | 264 мс |</pre>
+<h2>7. Данные</h2>
+<figure><a href="/data/preview.png" target="_blank"><img src="/data/preview.png" style="width:100%"></a><figcaption>случайные обучающие примеры</figcaption></figure>
+</html>

@@ -1,0 +1,12 @@
+demo12 сеть (xtalk)                 pcc 0.611 ssim_global 0.432 ssim_gauss 0.229 sel 0.157 own 2.333  0 мс/голограмму (батч)
+demo12 сеть + Adam50 (λ=1)          pcc 0.630 ssim_global 0.456 ssim_gauss 0.293 sel 0.195 own 3.000  328 мс/голограмму (батч)
+demo12 сеть + шум + Adam50 (λ=1)    pcc 0.619 ssim_global 0.451 ssim_gauss 0.189 sel 0.226 own 3.500  72 мс/голограмму (батч)
+demo12 сеть → GS50 нет init_phase у gs_batch
+demo12 GS50 (случ.)                 pcc 0.669 ssim_global 0.442 ssim_gauss 0.178 sel 0.153 own 2.417  112 мс/голограмму (батч)
+demo12 GS50 → Adam50 (λ=1)          pcc 0.648 ssim_global 0.496 ssim_gauss 0.244 sel 0.233 own 3.500  178 мс/голограмму (батч)
+val32  сеть (xtalk)                 pcc 0.473 ssim_global 0.308 ssim_gauss 0.232 sel 0.228 own 3.375  0 мс/голограмму (батч)
+val32  сеть + Adam50 (λ=1)          pcc 0.496 ssim_global 0.347 ssim_gauss 0.289 sel 0.302 own 3.781  83 мс/голограмму (батч)
+val32  сеть + шум + Adam50 (λ=1)    pcc 0.487 ssim_global 0.329 ssim_gauss 0.224 sel 0.329 own 3.906  81 мс/голограмму (батч)
+val32 сеть → GS50 нет init_phase у gs_batch
+val32  GS50 (случ.)                 pcc 0.507 ssim_global 0.320 ssim_gauss 0.185 sel 0.225 own 2.688  88 мс/голограмму (батч)
+val32  GS50 → Adam50 (λ=1)          pcc 0.526 ssim_global 0.368 ssim_gauss 0.257 sel 0.352 own 3.906  164 мс/голограмму (батч)

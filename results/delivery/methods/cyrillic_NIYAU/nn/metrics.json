@@ -1,0 +1,268 @@
+{
+  "method": "nn",
+  "steps": 0,
+  "quantity": "amplitude",
+  "policy": "peak",
+  "protocol": "E1: сравниваются амплитуды |K|; E2: исходное и восстановленное изображения делятся на свой максимум (= 1), метрики в [0, 1], ИСС с L = 1; recon_i.png = round(255·X/max X)",
+  "inputs": [
+    "/Users/danilka2203/Desktop/work/neural-doe-claude/data/demo/cyrillic_NIYAU/target_1.png",
+    "/Users/danilka2203/Desktop/work/neural-doe-claude/data/demo/cyrillic_NIYAU/target_2.png",
+    "/Users/danilka2203/Desktop/work/neural-doe-claude/data/demo/cyrillic_NIYAU/target_3.png",
+    "/Users/danilka2203/Desktop/work/neural-doe-claude/data/demo/cyrillic_NIYAU/target_4.png"
+  ],
+  "input_warnings": [],
+  "doe": "doe.png",
+  "recon": [
+    "recon_1.png",
+    "recon_2.png",
+    "recon_3.png",
+    "recon_4.png"
+  ],
+  "depths_mm": [
+    24.1,
+    25.3,
+    26.5,
+    27.7
+  ],
+  "planes": [
+    {
+      "depth_mm": 24.1,
+      "pcc": 0.7611413377793693,
+      "ssim_global": 0.38730753387381867,
+      "ssim_skimage": 0.11733782539432579,
+      "ssim_gauss": 0.1170488571520174
+    },
+    {
+      "depth_mm": 25.3,
+      "pcc": 0.7647608360179087,
+      "ssim_global": 0.49524758443638806,
+      "ssim_skimage": 0.14571265717897372,
+      "ssim_gauss": 0.1430546399296906
+    },
+    {
+      "depth_mm": 26.5,
+      "pcc": 0.7454825202603522,
+      "ssim_global": 0.4370501366439023,
+      "ssim_skimage": 0.10330873313039453,
+      "ssim_gauss": 0.10306390337810824
+    },
+    {
+      "depth_mm": 27.7,
+      "pcc": 0.660490273882785,
+      "ssim_global": 0.47557207928303247,
+      "ssim_skimage": 0.10855375174498881,
+      "ssim_gauss": 0.10504288701334615
+    }
+  ],
+  "summary": {
+    "pcc": {
+      "mean": 0.7329687419851039,
+      "worst": 0.660490273882785,
+      "valid": 4
+    },
+    "ssim_global": {
+      "mean": 0.4487943335592854,
+      "worst": 0.38730753387381867,
+      "valid": 4
+    },
+    "ssim_skimage": {
+      "mean": 0.11872824186217071,
+      "worst": 0.10330873313039453,
+      "valid": 4
+    },
+    "ssim_gauss": {
+      "mean": 0.11705257186829059,
+      "worst": 0.10306390337810824,
+      "valid": 4
+    }
+  },
+  "crosstalk": {
+    "selectivity": 0.18135280177656365,
+    "own_best": 4,
+    "diag": 0.7329687419851039,
+    "off": 0.5516159402085402,
+    "matrix_target_vs_plane": [
+      [
+        0.7611413377793693,
+        0.7447738182762521,
+        0.5806416975247738,
+        0.4336736390714429
+      ],
+      [
+        0.7444098878099098,
+        0.7647608360179087,
+        0.5862044339300345,
+        0.43245847190006315
+      ],
+      [
+        0.5950594872636898,
+        0.6934087736106298,
+        0.7454825202603522,
+        0.5855035561727101
+      ],
+      [
+        0.30467333329014235,
+        0.4046462337365292,
+        0.5139379499163049,
+        0.660490273882785
+      ]
+    ],
+    "note": "КК(цель i, восстановление в плоскости j); селективность = среднее диаг. − среднее вне диаг.; own_best — в скольких плоскостях своя цель похожа больше всех"
+  },
+  "summary_variants": {
+    "amplitude/peak": {
+      "pcc": {
+        "mean": 0.7329687419851039,
+        "worst": 0.660490273882785,
+        "valid": 4
+      },
+      "ssim_global": {
+        "mean": 0.4487943335592854,
+        "worst": 0.38730753387381867,
+        "valid": 4
+      },
+      "ssim_skimage": {
+        "mean": 0.11872824186217071,
+        "worst": 0.10330873313039453,
+        "valid": 4
+      },
+      "ssim_gauss": {
+        "mean": 0.11705257186829059,
+        "worst": 0.10306390337810824,
+        "valid": 4
+      }
+    },
+    "amplitude/minmax": {
+      "pcc": {
+        "mean": 0.7330043157268467,
+        "worst": 0.6605525896175194,
+        "valid": 4
+      },
+      "ssim_global": {
+        "mean": 0.44850188821923687,
+        "worst": 0.38625695675471766,
+        "valid": 4
+      },
+      "ssim_skimage": {
+        "mean": 0.11877751693967575,
+        "worst": 0.10333003250312711,
+        "valid": 4
+      },
+      "ssim_gauss": {
+        "mean": 0.11719570435896585,
+        "worst": 0.10312921315247334,
+        "valid": 4
+      }
+    },
+    "amplitude/fit": {
+      "pcc": {
+        "mean": 0.7405502328878567,
+        "worst": 0.6605748816708855,
+        "valid": 4
+      },
+      "ssim_global": {
+        "mean": 0.609862527517327,
+        "worst": 0.49214042012455994,
+        "valid": 4
+      },
+      "ssim_skimage": {
+        "mean": 0.15066300078665362,
+        "worst": 0.11425084152485648,
+        "valid": 4
+      },
+      "ssim_gauss": {
+        "mean": 0.14151514602544019,
+        "worst": 0.10972157926380284,
+        "valid": 4
+      }
+    },
+    "intensity/peak": {
+      "pcc": {
+        "mean": 0.6680609543155519,
+        "worst": 0.628063107052412,
+        "valid": 4
+      },
+      "ssim_global": {
+        "mean": 0.15229520205703212,
+        "worst": 0.08325517055364312,
+        "valid": 4
+      },
+      "ssim_skimage": {
+        "mean": 0.17705977624191593,
+        "worst": 0.16364942385961317,
+        "valid": 4
+      },
+      "ssim_gauss": {
+        "mean": 0.17396660453317472,
+        "worst": 0.1630354152421377,
+        "valid": 4
+      }
+    },
+    "intensity/minmax": {
+      "pcc": {
+        "mean": 0.6680688401977916,
+        "worst": 0.6280575761409879,
+        "valid": 4
+      },
+      "ssim_global": {
+        "mean": 0.15228869479563945,
+        "worst": 0.08324871140383855,
+        "valid": 4
+      },
+      "ssim_skimage": {
+        "mean": 0.17712371668025176,
+        "worst": 0.163726100406556,
+        "valid": 4
+      },
+      "ssim_gauss": {
+        "mean": 0.17401708422576773,
+        "worst": 0.16307443037882316,
+        "valid": 4
+      }
+    },
+    "intensity/fit": {
+      "pcc": {
+        "mean": 0.7183538721120922,
+        "worst": 0.6484736396920397,
+        "valid": 4
+      },
+      "ssim_global": {
+        "mean": 0.6314825140831908,
+        "worst": 0.5675819558411492,
+        "valid": 4
+      },
+      "ssim_skimage": {
+        "mean": 0.16125999938259572,
+        "worst": 0.13783832172484778,
+        "valid": 4
+      },
+      "ssim_gauss": {
+        "mean": 0.15728336009338853,
+        "worst": 0.1347526695303257,
+        "valid": 4
+      }
+    }
+  },
+  "timings_ms": {
+    "load_ms": 97.324,
+    "synth_ms": 389.148,
+    "synth_warm_ms": 406.467,
+    "eval_ms": 13.815,
+    "total_ms": 892.482
+  },
+  "device": "cpu",
+  "checkpoint": "checkpoints/amp_deep6/best.pt",
+  "model_device": "cpu",
+  "format": {
+    "doe": "PNG L, 8 бит, 128×128, 0 = −π, 255 = +π",
+    "recon": "PNG L, 8 бит, 128×128",
+    "checked": true
+  },
+  "versions": {
+    "python": "3.11.16",
+    "numpy": "2.4.6",
+    "scikit-image": "0.26.0",
+    "pillow": "12.3.0",
+    "torch": "2.15.0"
+  }
+}

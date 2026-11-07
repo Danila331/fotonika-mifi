@@ -1,0 +1,109 @@
+[02:19:51] init from checkpoints/init/best.pt (its step 19000): 2 -> 6 refinement stages, 336 new tensors
+[02:19:51] args {'run': 'amp_deep6', 'kind': 'doe', 'inputs': 'physics', 'residual': False, 'width': 32, 'mults': '1,2,4,8', 'blocks': 2, 'no_attn': False, 'unroll': 2, 'unroll_width': 24, 'unroll_mults': '1,2,4', 'bp_phase': 'random', 'quantity': 'amplitude', 'steps': 16000, 'batch': 16, 'lr': 0.0003, 'wd': 0.0001, 'warmup': 500, 'clip': 1.0, 'amp': False, 'alpha': 0.5, 'beta': 0.25, 'gamma': 0.3, 'norm': 'soft', 'soft_beta': 20.0, 'w_pcc': 1.0, 'xtalk': 1.0, 'add_stages': 4, 'quant': False, 'qat_frac': 0.1, 'init': 'checkpoints/init/best.pt', 'resume': True, 'ckpt_dir': '/content/drive/MyDrive/neural-doe/checkpoints', 'results_dir': '/content/drive/MyDrive/neural-doe/results/ml', 'save_every': 500, 'val_n': 128, 'val_every': 1000, 'best_metric': 'Jsel', 'workers': 8, 'seed': 0, 'overfit': False, 'device': None, 'bench': 0}
+[02:19:51] model {'kind': 'doe', 'inputs': 'physics', 'residual': False, 'width': 32, 'mults': (1, 2, 4, 8), 'blocks': 2, 'attn': True, 'unroll': 6, 'unroll_width': 24, 'unroll_mults': (1, 2, 4), 'seed': 1234, 'quantity': 'amplitude', 'bp_phase': 'random'} params 15.44M device cuda (NVIDIA L4)
+[02:19:52] val set (128, 4, 128, 128) (data/val.npy)
+[02:21:20] step 200 loss 1.6580 train_pcc 0.4910 lr 1.21e-04 gn 0.76 440ms/step
+[02:22:43] step 400 loss 1.6788 train_pcc 0.5635 lr 2.41e-04 gn 0.71 427ms/step
+[02:24:06] step 600 loss 1.7340 train_pcc 0.5095 lr 3.00e-04 gn 4.89 424ms/step
+[02:25:29] step 800 loss 1.7510 train_pcc 0.4627 lr 3.00e-04 gn 1.48 421ms/step
+[02:26:52] step 1000 loss 1.7336 train_pcc 0.4655 lr 2.99e-04 gn 0.67 420ms/step
+[02:26:59] VAL step 1000 pcc 0.4697/0.3526 ssim_g 0.3015 ssim_sk 0.1979 ssim_gs 0.2004 J 0.3515 sel 0.2421 own 3.37/4 *best*
+[02:28:23] step 1200 loss 1.7224 train_pcc 0.5135 lr 2.99e-04 gn 1.43 426ms/step
+[02:29:46] step 1400 loss 1.7451 train_pcc 0.4302 lr 2.98e-04 gn 0.67 424ms/step
+[02:31:09] step 1600 loss 1.7374 train_pcc 0.4528 lr 2.96e-04 gn 0.74 423ms/step
+[02:32:32] step 1800 loss 1.7459 train_pcc 0.4921 lr 2.95e-04 gn 0.86 422ms/step
+[02:33:55] step 2000 loss 1.7382 train_pcc 0.4578 lr 2.93e-04 gn 0.66 421ms/step
+[02:33:59] VAL step 2000 pcc 0.4779/0.3790 ssim_g 0.3133 ssim_sk 0.1916 ssim_gs 0.1922 J 0.3551 sel 0.2632 own 3.57/4 *best*
+[02:35:23] step 2200 loss 1.7410 train_pcc 0.5474 lr 2.91e-04 gn 0.91 423ms/step
+[02:36:46] step 2400 loss 1.7196 train_pcc 0.4989 lr 2.89e-04 gn 0.94 422ms/step
+[02:38:09] step 2600 loss 1.7191 train_pcc 0.4971 lr 2.87e-04 gn 1.42 422ms/step
+[02:39:32] step 2800 loss 1.7158 train_pcc 0.4869 lr 2.84e-04 gn 0.71 421ms/step
+[02:40:55] step 3000 loss 1.7198 train_pcc 0.4961 lr 2.82e-04 gn 1.92 421ms/step
+[02:40:59] VAL step 3000 pcc 0.4835/0.3930 ssim_g 0.3177 ssim_sk 0.1843 ssim_gs 0.1835 J 0.3560 sel 0.2789 own 3.66/4 *best*
+[02:42:23] step 3200 loss 1.7397 train_pcc 0.5078 lr 2.79e-04 gn 3.23 422ms/step
+[02:43:46] step 3400 loss 1.7320 train_pcc 0.4951 lr 2.75e-04 gn 10.27 422ms/step
+[02:45:09] step 3600 loss 1.7431 train_pcc 0.5242 lr 2.72e-04 gn 12.86 421ms/step
+[02:46:32] step 3800 loss 1.7303 train_pcc 0.5036 lr 2.68e-04 gn 2.18 421ms/step
+[02:47:54] step 4000 loss 1.7428 train_pcc 0.5166 lr 2.65e-04 gn 1.94 421ms/step
+[02:47:59] VAL step 4000 pcc 0.4869/0.3865 ssim_g 0.3143 ssim_sk 0.1881 ssim_gs 0.1880 J 0.3585 sel 0.2728 own 3.53/4
+[02:48:08] resume from /content/drive/MyDrive/neural-doe/checkpoints/amp_deep6/last.pt at step 3500
+[02:48:08] args {'run': 'amp_deep6', 'kind': 'doe', 'inputs': 'physics', 'residual': False, 'width': 32, 'mults': '1,2,4,8', 'blocks': 2, 'no_attn': False, 'unroll': 2, 'unroll_width': 24, 'unroll_mults': '1,2,4', 'bp_phase': 'random', 'quantity': 'amplitude', 'steps': 16000, 'batch': 16, 'lr': 0.0003, 'wd': 0.0001, 'warmup': 500, 'clip': 1.0, 'amp': False, 'alpha': 0.5, 'beta': 0.25, 'gamma': 0.3, 'norm': 'soft', 'soft_beta': 20.0, 'w_pcc': 1.0, 'xtalk': 1.0, 'add_stages': 4, 'quant': False, 'qat_frac': 0.1, 'init': 'checkpoints/init/best.pt', 'resume': True, 'ckpt_dir': '/content/drive/MyDrive/neural-doe/checkpoints', 'results_dir': '/content/drive/MyDrive/neural-doe/results/ml', 'save_every': 500, 'val_n': 128, 'val_every': 1000, 'best_metric': 'Jsel', 'workers': 8, 'seed': 0, 'overfit': False, 'device': None, 'bench': 0}
+[02:48:08] model {'kind': 'doe', 'inputs': 'physics', 'residual': False, 'width': 32, 'mults': (1, 2, 4, 8), 'blocks': 2, 'attn': True, 'unroll': 6, 'unroll_width': 24, 'unroll_mults': (1, 2, 4), 'seed': 1234, 'quantity': 'amplitude', 'bp_phase': 'random'} params 15.44M device cuda (NVIDIA L4)
+[02:48:09] val set (128, 4, 128, 128) (data/val.npy)
+[02:48:56] step 3600 loss 1.7363 train_pcc 0.4803 lr 2.72e-04 gn 1.70 466ms/step
+[02:50:19] step 3800 loss 1.7412 train_pcc 0.4921 lr 2.68e-04 gn 1.07 430ms/step
+[02:51:41] step 4000 loss 1.7306 train_pcc 0.5335 lr 2.65e-04 gn 0.93 423ms/step
+[02:51:48] VAL step 4000 pcc 0.4955/0.3938 ssim_g 0.3239 ssim_sk 0.1851 ssim_gs 0.1841 J 0.3633 sel 0.2797 own 3.62/4 *best*
+[02:53:12] step 4200 loss 1.7385 train_pcc 0.4499 lr 2.61e-04 gn 0.94 432ms/step
+[02:54:35] step 4400 loss 1.7313 train_pcc 0.5014 lr 2.56e-04 gn 2.41 428ms/step
+[02:55:58] step 4600 loss 1.7200 train_pcc 0.4991 lr 2.52e-04 gn 1.28 426ms/step
+[02:57:20] step 4800 loss 1.7240 train_pcc 0.5194 lr 2.48e-04 gn 1.43 424ms/step
+[02:58:43] step 5000 loss 1.7296 train_pcc 0.4686 lr 2.43e-04 gn 0.97 422ms/step
+[02:58:47] VAL step 5000 pcc 0.4905/0.4010 ssim_g 0.3132 ssim_sk 0.1908 ssim_gs 0.1900 J 0.3609 sel 0.2888 own 3.74/4 *best*
+[03:00:10] step 5200 loss 1.7298 train_pcc 0.4891 lr 2.38e-04 gn 3.16 424ms/step
+[03:01:33] step 5400 loss 1.7187 train_pcc 0.5455 lr 2.33e-04 gn 2.60 423ms/step
+[03:02:56] step 5600 loss 1.7316 train_pcc 0.5317 lr 2.28e-04 gn 1.45 422ms/step
+[03:04:19] step 5800 loss 1.7225 train_pcc 0.5094 lr 2.23e-04 gn 0.74 421ms/step
+[03:05:41] step 6000 loss 1.7127 train_pcc 0.5017 lr 2.18e-04 gn 5.78 421ms/step
+[03:05:46] VAL step 6000 pcc 0.5027/0.4085 ssim_g 0.3251 ssim_sk 0.1938 ssim_gs 0.1933 J 0.3701 sel 0.2848 own 3.62/4 *best*
+[03:07:09] step 6200 loss 1.7149 train_pcc 0.4921 lr 2.12e-04 gn 0.73 422ms/step
+[03:08:31] step 6400 loss 1.7174 train_pcc 0.4798 lr 2.07e-04 gn 1.35 421ms/step
+[03:09:55] step 6600 loss 1.7048 train_pcc 0.5091 lr 2.01e-04 gn 1.22 421ms/step
+[03:11:17] step 6800 loss 1.7116 train_pcc 0.4796 lr 1.96e-04 gn 1.18 420ms/step
+[03:12:40] step 7000 loss 1.7181 train_pcc 0.5006 lr 1.90e-04 gn 0.80 420ms/step
+[03:12:44] VAL step 7000 pcc 0.4926/0.4062 ssim_g 0.3232 ssim_sk 0.1926 ssim_gs 0.1918 J 0.3642 sel 0.2934 own 3.74/4 *best*
+[03:14:07] step 7200 loss 1.7072 train_pcc 0.5167 lr 1.84e-04 gn 1.68 421ms/step
+[03:15:30] step 7400 loss 1.7049 train_pcc 0.4763 lr 1.78e-04 gn 0.95 421ms/step
+[03:16:53] step 7600 loss 1.7051 train_pcc 0.5078 lr 1.72e-04 gn 4.03 420ms/step
+[03:18:15] step 7800 loss 1.7054 train_pcc 0.5332 lr 1.66e-04 gn 1.73 420ms/step
+[03:19:38] step 8000 loss 1.7059 train_pcc 0.5315 lr 1.60e-04 gn 1.43 420ms/step
+[03:19:42] VAL step 8000 pcc 0.4982/0.4115 ssim_g 0.3239 ssim_sk 0.1969 ssim_gs 0.1961 J 0.3686 sel 0.2980 own 3.70/4 *best*
+[03:21:06] step 8200 loss 1.7006 train_pcc 0.4839 lr 1.54e-04 gn 1.54 421ms/step
+[03:22:28] step 8400 loss 1.6965 train_pcc 0.5244 lr 1.49e-04 gn 1.50 420ms/step
+[03:23:52] step 8600 loss 1.6947 train_pcc 0.5015 lr 1.43e-04 gn 3.22 420ms/step
+[03:25:14] step 8800 loss 1.7073 train_pcc 0.4505 lr 1.37e-04 gn 2.00 420ms/step
+[03:26:37] step 9000 loss 1.6985 train_pcc 0.4846 lr 1.31e-04 gn 1.32 419ms/step
+[03:26:41] VAL step 9000 pcc 0.4992/0.4118 ssim_g 0.3264 ssim_sk 0.1978 ssim_gs 0.1972 J 0.3699 sel 0.2965 own 3.69/4
+[03:28:04] step 9200 loss 1.6905 train_pcc 0.5037 lr 1.25e-04 gn 1.44 420ms/step
+[03:29:27] step 9400 loss 1.6964 train_pcc 0.5243 lr 1.19e-04 gn 1.78 420ms/step
+[03:30:50] step 9600 loss 1.6908 train_pcc 0.4798 lr 1.13e-04 gn 1.08 420ms/step
+[03:32:12] step 9800 loss 1.6928 train_pcc 0.4866 lr 1.08e-04 gn 1.65 419ms/step
+[03:33:35] step 10000 loss 1.6899 train_pcc 0.5304 lr 1.02e-04 gn 1.99 419ms/step
+[03:33:39] VAL step 10000 pcc 0.5024/0.4220 ssim_g 0.3288 ssim_sk 0.1992 ssim_gs 0.1985 J 0.3723 sel 0.3034 own 3.75/4 *best*
+[03:35:03] step 10200 loss 1.6923 train_pcc 0.4992 lr 9.64e-05 gn 1.14 420ms/step
+[03:36:25] step 10400 loss 1.6850 train_pcc 0.5282 lr 9.10e-05 gn 1.21 420ms/step
+[03:37:48] step 10600 loss 1.6933 train_pcc 0.5379 lr 8.56e-05 gn 0.81 420ms/step
+[03:39:10] step 10800 loss 1.6921 train_pcc 0.4957 lr 8.04e-05 gn 3.26 419ms/step
+[03:40:33] step 11000 loss 1.6863 train_pcc 0.5226 lr 7.52e-05 gn 1.25 419ms/step
+[03:40:37] VAL step 11000 pcc 0.5037/0.4263 ssim_g 0.3254 ssim_sk 0.2036 ssim_gs 0.2033 J 0.3739 sel 0.3015 own 3.78/4
+[03:42:01] step 11200 loss 1.6882 train_pcc 0.5478 lr 7.03e-05 gn 1.74 420ms/step
+[03:43:23] step 11400 loss 1.6881 train_pcc 0.4875 lr 6.54e-05 gn 2.23 419ms/step
+[03:44:46] step 11600 loss 1.6705 train_pcc 0.5078 lr 6.07e-05 gn 2.77 419ms/step
+[03:46:09] step 11800 loss 1.6824 train_pcc 0.5212 lr 5.61e-05 gn 2.47 419ms/step
+[03:47:31] step 12000 loss 1.6816 train_pcc 0.5140 lr 5.17e-05 gn 1.17 419ms/step
+[03:47:35] VAL step 12000 pcc 0.5058/0.4276 ssim_g 0.3308 ssim_sk 0.2007 ssim_gs 0.2000 J 0.3748 sel 0.3046 own 3.80/4 *best*
+[03:48:59] step 12200 loss 1.6815 train_pcc 0.5301 lr 4.75e-05 gn 1.00 419ms/step
+[03:50:21] step 12400 loss 1.6849 train_pcc 0.5045 lr 4.34e-05 gn 1.43 419ms/step
+[03:51:44] step 12600 loss 1.6684 train_pcc 0.5174 lr 3.95e-05 gn 2.29 419ms/step
+[03:53:07] step 12800 loss 1.6716 train_pcc 0.5261 lr 3.59e-05 gn 1.10 419ms/step
+[03:54:29] step 13000 loss 1.6753 train_pcc 0.4739 lr 3.23e-05 gn 1.11 419ms/step
+[03:54:34] VAL step 13000 pcc 0.5044/0.4299 ssim_g 0.3289 ssim_sk 0.2010 ssim_gs 0.2003 J 0.3739 sel 0.3080 own 3.80/4 *best*
+[03:55:57] step 13200 loss 1.6820 train_pcc 0.5109 lr 2.90e-05 gn 0.98 419ms/step
+[03:57:20] step 13400 loss 1.6772 train_pcc 0.5335 lr 2.59e-05 gn 1.36 419ms/step
+[03:58:43] step 13600 loss 1.6751 train_pcc 0.5667 lr 2.31e-05 gn 1.19 419ms/step
+[04:00:05] step 13800 loss 1.6678 train_pcc 0.5424 lr 2.04e-05 gn 2.39 419ms/step
+[04:01:28] step 14000 loss 1.6766 train_pcc 0.4955 lr 1.79e-05 gn 10.24 419ms/step
+[04:01:32] VAL step 14000 pcc 0.5041/0.4293 ssim_g 0.3298 ssim_sk 0.2042 ssim_gs 0.2037 J 0.3750 sel 0.3058 own 3.80/4
+[04:02:55] step 14200 loss 1.6725 train_pcc 0.4866 lr 1.57e-05 gn 0.97 419ms/step
+[04:04:18] step 14400 loss 1.6755 train_pcc 0.5314 lr 1.37e-05 gn 1.96 419ms/step
+[04:05:41] step 14600 loss 1.6778 train_pcc 0.5261 lr 1.19e-05 gn 2.16 419ms/step QAT
+[04:07:03] step 14800 loss 1.6742 train_pcc 0.4760 lr 1.03e-05 gn 0.89 419ms/step QAT
+[04:08:26] step 15000 loss 1.6703 train_pcc 0.4773 lr 9.01e-06 gn 2.46 419ms/step QAT
+[04:08:30] VAL step 15000 pcc 0.5056/0.4321 ssim_g 0.3307 ssim_sk 0.2038 ssim_gs 0.2033 J 0.3758 sel 0.3058 own 3.80/4
+[04:09:53] step 15200 loss 1.6750 train_pcc 0.5583 lr 7.93e-06 gn 2.09 419ms/step QAT
+[04:11:16] step 15400 loss 1.6775 train_pcc 0.5681 lr 7.09e-06 gn 0.93 419ms/step QAT
+[04:12:39] step 15600 loss 1.6766 train_pcc 0.5245 lr 6.48e-06 gn 2.44 419ms/step QAT
+[04:14:01] step 15800 loss 1.6694 train_pcc 0.5131 lr 6.12e-06 gn 1.78 419ms/step QAT
+[04:15:24] step 16000 loss 1.6731 train_pcc 0.5056 lr 6.00e-06 gn 1.20 419ms/step QAT
+[04:15:28] VAL step 16000 pcc 0.5044/0.4321 ssim_g 0.3294 ssim_sk 0.2039 ssim_gs 0.2034 J 0.3750 sel 0.3065 own 3.81/4
+[04:15:29] done. best val Jsel 0.6819, 5240s

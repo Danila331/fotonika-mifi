@@ -1,0 +1,113 @@
+{
+  "doe": "results/delivery/demo/stress/nn_refine50/doe.png",
+  "targets": [
+    "data/demo/stress/target_1.png",
+    "data/demo/stress/target_2.png",
+    "data/demo/stress/target_3.png",
+    "data/demo/stress/target_4.png"
+  ],
+  "depths_mm": [
+    24.1,
+    25.3,
+    26.5,
+    27.7
+  ],
+  "quantity": "amplitude",
+  "normalisation": "каждое изображение делится на свой максимум (E2), метрики в [0, 1], L = 1",
+  "evaluations": [
+    {
+      "quantity": "amplitude",
+      "policy": "peak",
+      "planes": [
+        {
+          "depth_mm": 24.1,
+          "pcc": null,
+          "ssim_global": 0.0977838251618083,
+          "ssim_skimage": 0.2644381734580396,
+          "ssim_gauss": 0.2679532201500236
+        },
+        {
+          "depth_mm": 25.3,
+          "pcc": null,
+          "ssim_global": 0.020079518290373397,
+          "ssim_skimage": 0.054420952043717385,
+          "ssim_gauss": 0.05627803574729487
+        },
+        {
+          "depth_mm": 26.5,
+          "pcc": 0.910482854847165,
+          "ssim_global": 0.7405551571476089,
+          "ssim_skimage": 0.09981640997470365,
+          "ssim_gauss": 0.09655391790054964
+        },
+        {
+          "depth_mm": 27.7,
+          "pcc": 0.925650745296785,
+          "ssim_global": 0.775783803637944,
+          "ssim_skimage": 0.10472118014578592,
+          "ssim_gauss": 0.10022123002406987
+        }
+      ],
+      "summary": {
+        "pcc": {
+          "mean": 0.9180668000719749,
+          "worst": 0.910482854847165,
+          "valid": 2
+        },
+        "ssim_global": {
+          "mean": 0.4085505760594337,
+          "worst": 0.020079518290373397,
+          "valid": 4
+        },
+        "ssim_skimage": {
+          "mean": 0.13084917890556164,
+          "worst": 0.054420952043717385,
+          "valid": 4
+        },
+        "ssim_gauss": {
+          "mean": 0.1302516009554845,
+          "worst": 0.05627803574729487,
+          "valid": 4
+        }
+      },
+      "crosstalk": {
+        "matrix": [
+          [
+            NaN,
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            0.42628336482073975,
+            0.6382025068536408,
+            0.910482854847165,
+            0.925650745296785
+          ],
+          [
+            0.42628336482073975,
+            0.6382025068536408,
+            0.910482854847165,
+            0.925650745296785
+          ]
+        ],
+        "diag": 0.9180668000719749,
+        "off": 0.6608508905821185,
+        "selectivity": 0.2572159094898564,
+        "own_best": 1
+      }
+    }
+  ],
+  "check_recon_max_abs_diff": [
+    0,
+    0,
+    0,
+    0
+  ]
+}

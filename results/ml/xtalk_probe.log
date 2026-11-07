@@ -1,0 +1,22 @@
+demo nn {'pcc': 0.645, 'ssim_global': 0.47, 'ssim_gauss': 0.26, 'sel': 0.082, 'own': 2.0}
+demo nn+adam300 xtalk=0.0 {'pcc': 0.661, 'ssim_global': 0.512, 'ssim_gauss': 0.392, 'sel': 0.121, 'own': 2.167} 6s
+demo nn+adam300 xtalk=1.0 {'pcc': 0.643, 'ssim_global': 0.483, 'ssim_gauss': 0.372, 'sel': 0.196, 'own': 3.083} 4s
+demo nn+adam300 xtalk=3.0 {'pcc': 0.51, 'ssim_global': 0.328, 'ssim_gauss': 0.255, 'sel': 0.293, 'own': 3.667} 4s
+demo rand+adam300 xtalk=0.0 {'pcc': 0.674, 'ssim_global': 0.536, 'ssim_gauss': 0.275, 'sel': 0.171, 'own': 3.083} 3s
+demo rand+adam300 xtalk=1.0 {'pcc': 0.642, 'ssim_global': 0.471, 'ssim_gauss': 0.235, 'sel': 0.281, 'own': 3.667} 4s
+demo rand+adam300 xtalk=3.0 {'pcc': 0.516, 'ssim_global': 0.324, 'ssim_gauss': 0.207, 'sel': 0.321, 'own': 3.667} 4s
+val16 nn {'pcc': 0.507, 'ssim_global': 0.333, 'ssim_gauss': 0.223, 'sel': 0.152, 'own': 2.75}
+val16 nn+adam300 xtalk=0.0 {'pcc': 0.557, 'ssim_global': 0.401, 'ssim_gauss': 0.315, 'sel': 0.246, 'own': 3.5} 5s
+val16 nn+adam300 xtalk=1.0 {'pcc': 0.529, 'ssim_global': 0.371, 'ssim_gauss': 0.291, 'sel': 0.365, 'own': 3.75} 5s
+val16 nn+adam300 xtalk=3.0 {'pcc': 0.433, 'ssim_global': 0.286, 'ssim_gauss': 0.237, 'sel': 0.41, 'own': 3.875} 5s
+val16 rand+adam300 xtalk=0.0 {'pcc': 0.572, 'ssim_global': 0.403, 'ssim_gauss': 0.276, 'sel': 0.288, 'own': 3.812} 5s
+val16 rand+adam300 xtalk=1.0 {'pcc': 0.534, 'ssim_global': 0.356, 'ssim_gauss': 0.247, 'sel': 0.41, 'own': 3.875} 5s
+val16 rand+adam300 xtalk=3.0 {'pcc': 0.446, 'ssim_global': 0.284, 'ssim_gauss': 0.224, 'sel': 0.426, 'own': 3.875} 5s
+demo nn+adam300 xtalk=0.3 {'pcc': 0.66, 'ssim_global': 0.511, 'ssim_gauss': 0.391, 'sel': 0.139, 'own': 2.333} 7s
+demo nn+adam300 xtalk=0.6 {'pcc': 0.656, 'ssim_global': 0.504, 'ssim_gauss': 0.384, 'sel': 0.161, 'own': 2.75} 4s
+demo rand+adam300 xtalk=0.3 {'pcc': 0.677, 'ssim_global': 0.528, 'ssim_gauss': 0.243, 'sel': 0.206, 'own': 3.333} 4s
+demo rand+adam300 xtalk=0.6 {'pcc': 0.668, 'ssim_global': 0.512, 'ssim_gauss': 0.241, 'sel': 0.24, 'own': 3.5} 4s
+val16 nn+adam300 xtalk=0.3 {'pcc': 0.555, 'ssim_global': 0.399, 'ssim_gauss': 0.313, 'sel': 0.283, 'own': 3.562} 5s
+val16 nn+adam300 xtalk=0.6 {'pcc': 0.548, 'ssim_global': 0.391, 'ssim_gauss': 0.306, 'sel': 0.322, 'own': 3.688} 5s
+val16 rand+adam300 xtalk=0.3 {'pcc': 0.572, 'ssim_global': 0.405, 'ssim_gauss': 0.261, 'sel': 0.333, 'own': 3.812} 5s
+val16 rand+adam300 xtalk=0.6 {'pcc': 0.56, 'ssim_global': 0.382, 'ssim_gauss': 0.259, 'sel': 0.374, 'own': 3.812} 5s

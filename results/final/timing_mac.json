@@ -1,0 +1,10 @@
+{
+ "nn_mps_ms": 13.3,
+ "nn_refine20_mps_ms": 42.6,
+ "nn_refine50_mps_ms": 86.8,
+ "nn_refine100_mps_ms": 163.0,
+ "nn_cpu_ms": 124.5,
+ "nn_refine20_cpu_ms": 357.7,
+ "nn_refine50_cpu_ms": 843.5,
+ "nn_refine100_cpu_ms": 1355.8
+}
