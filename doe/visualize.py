@@ -17,7 +17,7 @@ SURFACE = "#fcfcfb"
 INK = "#0b0b0b"
 INK_2 = "#52514e"
 GRID = "#e4e3df"
-METHOD_RU = {"nn": "нейросеть", "nn_refine": "нейросеть + уточнение", "gs": "Гершберг–Сакстон",
+METHOD_RU = {"nn_quality": "нейросеть + отбор ДОЭ", "nn": "нейросеть", "nn_refine": "нейросеть + уточнение", "gs": "Гершберг–Сакстон",
              "adam": "Adam", "backprop": "обратное распространение"}
 PLANE_COLORS = ("#2a78d6", "#eb6834", "#1baf7a", "#eda100")   # plane 1..4, fixed order
 SERIES = ("#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#6250d6", "#e34948")

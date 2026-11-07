@@ -2,3 +2,8 @@
 __pycache__
 *.pyc
 out
+
+.venv
+data/external
+data/cache
+data/*.npy

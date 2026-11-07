@@ -33,10 +33,10 @@ from doe.metrics import crosstalk, evaluate
 
 REFINE_ALPHA, REFINE_BETA = 1.0, 0.5  # вес оконного / глобального ИСС при уточнении (SSIM — основная метрика сдачи)
 REFINE_XTALK = 0.25  # вес штрафа за помехи при уточнении (при обучении 1.0): чище картинка, разделение чуть слабее
-METHODS = ("nn", "nn_refine", "gs", "adam", "backprop")
-DEFAULT_STEPS = {"nn_refine": 100, "gs": 200, "adam": 500, "backprop": 0, "nn": 0}
+METHODS = ("nn", "nn_refine", "nn_quality", "gs", "adam", "backprop")
+DEFAULT_STEPS = {"nn_quality": 300, "nn_refine": 100, "gs": 200, "adam": 500, "backprop": 0, "nn": 0}
 METRICS = ("pcc", "ssim_global", "ssim_skimage", "ssim_gauss")
-METHOD_RU = {"nn": "Нейросеть", "nn_refine": "Нейросеть + уточнение", "gs": "Гершберг–Сакстон",
+METHOD_RU = {"nn_quality": "Нейросеть + отбор улучшенного ДОЭ", "nn": "Нейросеть", "nn_refine": "Нейросеть + уточнение", "gs": "Гершберг–Сакстон",
              "adam": "Adam", "backprop": "Обратное распространение"}
 
 
@@ -67,7 +67,7 @@ class Synthesiser:
         self.seed = seed
         self.info = {}
         t0 = time.perf_counter()
-        if method in ("nn", "nn_refine"):
+        if method in ("nn", "nn_refine", "nn_quality"):
             try:
                 from doe.infer import NeuralDOE
             except ImportError as e:
@@ -94,6 +94,14 @@ class Synthesiser:
         m = self.method
         if m == "nn":
             return self.model.predict(targets_u8)
+        if m == "nn_quality":
+            from doe.quality import QualityConfig, refine_quality
+            cfg = QualityConfig(steps=self.steps, xtalk=self.refine_xtalk)
+            phases, choices = refine_quality(self.model, targets_u8[None], cfg)
+            from dataclasses import asdict
+            self.info["quality"] = {"config": asdict(cfg), "baseline_steps": 100, "baseline_xtalk": 0.25, "selection": choices[0],
+                                    "score_note": "engineering proxy, not official jury score"}
+            return phases[0]
         if m == "nn_refine":
             return self.model.predict_refined(targets_u8, steps=self.steps, xtalk=self.refine_xtalk,
                                                 alpha=REFINE_ALPHA, beta=REFINE_BETA)
@@ -162,6 +170,9 @@ def _versions():
 def run(inputs, out, method="nn_refine", steps=None, policy="peak", strict=False, device=None, seed=0,
         checkpoint=None, figure=True, synthesiser=None, quiet=False, quantity="amplitude", refine_xtalk=REFINE_XTALK):
     """Full pipeline; returns the metrics dict (also written to out/metrics.json)."""
+    effective_method = synthesiser.method if synthesiser is not None else method
+    if effective_method == "nn_quality" and (policy != "peak" or quantity != "amplitude"):
+        raise ValueError("nn_quality supports only amplitude with peak normalization")
     t_start = time.perf_counter()
     out = Path(out)
     out.mkdir(parents=True, exist_ok=True)
@@ -204,7 +215,7 @@ def run(inputs, out, method="nn_refine", steps=None, policy="peak", strict=False
 
     timings["total_ms"] = (time.perf_counter() - t_start) * 1e3
     result = {
-        "method": syn.method, "steps": syn.steps, "refine_xtalk": syn.refine_xtalk if syn.method == "nn_refine" else None, "quantity": quantity, "policy": policy,
+        "method": syn.method, "steps": syn.steps, "refine_xtalk": syn.refine_xtalk if syn.method in ("nn_refine", "nn_quality") else None, "quantity": quantity, "policy": policy,
         "protocol": "E1: сравниваются амплитуды |K|; E2: исходное и восстановленное изображения делятся "
                     "на свой максимум (= 1), метрики в [0, 1], ИСС с L = 1; recon_i.png = round(255·X/max X)",
         "inputs": [str(p) for p in inputs], "input_warnings": input_warnings,

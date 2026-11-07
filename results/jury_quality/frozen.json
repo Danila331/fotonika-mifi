@@ -1,0 +1,87 @@
+{
+  "quality_name": "long_balanced",
+  "config": {
+    "steps": 300,
+    "lr": 0.03,
+    "alpha": 1.0,
+    "beta": 0.5,
+    "xtalk": 0.25,
+    "check_every": 50,
+    "peak_final": false
+  },
+  "checkpoint": "checkpoints/best.pt",
+  "baseline_sha256": "99affbe8ba5e5c9f09f38521f83ed45b7b7af4a341e11a268f1925c43d97c93d",
+  "val_sha256": "08c5bf219c5a0a33e69866286e2d84b2665920bf0a12448b7fba8836ea429b5c",
+  "proxy": "0.4 Pearson + 0.3 global SSIM + 0.3 Gaussian SSIM (renormalize undefined Pearson)",
+  "validation": {
+    "fast": {
+      "pcc": 0.4887108552546381,
+      "ssim_global": 0.3189227827879709,
+      "ssim_skimage": 0.2070454714666357,
+      "ssim_gauss": 0.20775405225309132,
+      "pcc_worst": 0.4172401890179636,
+      "selectivity": 0.31878601549990515,
+      "proxy": 0.35348739261417395
+    },
+    "baseline": {
+      "pcc": 0.5442105713130247,
+      "ssim_global": 0.4092958719845313,
+      "ssim_skimage": 0.3176708964677383,
+      "ssim_gauss": 0.3251243373253765,
+      "pcc_worst": 0.45350051675960407,
+      "selectivity": 0.2932602665516337,
+      "proxy": 0.43801029131818225
+    },
+    "long_balanced": {
+      "pcc": 0.552826222636079,
+      "ssim_global": 0.41823817181196277,
+      "ssim_skimage": 0.3355600909397001,
+      "ssim_gauss": 0.34452356722061706,
+      "pcc_worst": 0.4577253072152161,
+      "selectivity": 0.29693521200681106,
+      "proxy": 0.4499590107642055
+    },
+    "global_emphasis": {
+      "pcc": 0.5470283970412455,
+      "ssim_global": 0.41431127413711005,
+      "ssim_skimage": 0.3213095332738722,
+      "ssim_gauss": 0.32811513084256516,
+      "pcc_worst": 0.45788770699039255,
+      "selectivity": 0.2941587254590309,
+      "proxy": 0.4415392803104008
+    },
+    "peak_finish": {
+      "pcc": 0.5469093036608175,
+      "ssim_global": 0.4144603408052358,
+      "ssim_skimage": 0.321122684941418,
+      "ssim_gauss": 0.3279151885755862,
+      "pcc_worst": 0.4577316430679503,
+      "selectivity": 0.2940516721733702,
+      "proxy": 0.4414763802785736
+    }
+  },
+  "device": "mps",
+  "finetuned_checkpoint": "out/jury/checkpoints/jury_pilot/best.pt",
+  "finetuned_sha256": "2354aca6670ee703f8a4c7273884948138aa41702301c0968cffa82537ff821e",
+  "finetuned_validation": {
+    "fast": {
+      "pcc": 0.5140571022629513,
+      "ssim_global": 0.33888555337944376,
+      "ssim_skimage": 0.21443905202877178,
+      "ssim_gauss": 0.2150829314512469,
+      "pcc_worst": 0.41903761725974287,
+      "selectivity": 0.28030066293799005,
+      "proxy": 0.37181338635438776
+    },
+    "baseline": {
+      "pcc": 0.5431549274651478,
+      "ssim_global": 0.4106559408990726,
+      "ssim_skimage": 0.3219101040500707,
+      "ssim_gauss": 0.32984586755102463,
+      "pcc_worst": 0.45459818990506423,
+      "selectivity": 0.28476582601160694,
+      "proxy": 0.43941251352108834
+    }
+  },
+  "finetuned_fast_improves": true
+}
