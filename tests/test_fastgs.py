@@ -35,3 +35,9 @@ def test_docker_environment_selects_fastgs_without_explicit_flag(monkeypatch):
     assert predict.default_method() == "nn_fastgs"
     monkeypatch.delenv("DOE_DEFAULT_MODE")
     assert predict.default_method() == "nn"
+
+
+def test_docker_defaults_to_four_cpu_threads():
+    with open("Dockerfile", encoding="utf-8") as dockerfile:
+        config = dockerfile.read()
+    assert "OMP_NUM_THREADS=4" in config
